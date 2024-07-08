@@ -1,200 +1,200 @@
 msgid "TORPEDO ASSEMBLY SETTINGS"
-msgstr ""
+msgstr "鱼雷装配设置"
 
 msgid "Torpedo Body"
-msgstr ""
+msgstr "鱼雷形态"
 
 msgid "Torpedo Warhead"
-msgstr ""
+msgstr "鱼雷战斗部"
 
 msgid "Torpedo Rarity"
-msgstr ""
+msgstr "鱼雷稀有度"
 
 msgid "DESIGN"
-msgstr ""
+msgstr "设计方案"
 
 msgid "SAVE"
-msgstr ""
+msgstr "保存"
 
 msgid "RESET"
-msgstr ""
+msgstr "重置"
 
 msgid "Generates torpedo design using the selected options. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr ""
+msgstr "使用选定的选项生成鱼雷设计。 如果您的船缺少装配区或鱼雷储存块，将被禁用。"
 
 msgid "Saves current torpedo design to disk. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr ""
+msgstr "将当前的鱼雷设计保存到磁盘。 如果没有生成鱼雷设计或者您的船缺少装配区或鱼雷存储块，将被禁用。"
 
 msgid "Resets torpedo design and all stats shown on the interface. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr ""
+msgstr "重置鱼雷设计和界面上显示的所有统计数据。 如果您的船缺少装配区或鱼雷储存块，将被禁用。"
 
 msgid "SAVED TORPEDO DESIGNS"
-msgstr ""
+msgstr "保存的鱼雷设计"
 
 msgid "DELETE"
-msgstr ""
+msgstr "删除"
 
 msgid "RELOAD"
-msgstr ""
+msgstr "重载"
 
 msgid "Deletes saved design you've selected. Will be disabled, if you have no more saved designs."
-msgstr ""
+msgstr "删除您选择的已保存设计。如果您没有更多已保存设计，将被禁用。"
 
 msgid "Reloads saved designs from the disk. Suitable if you add them manually mid-play."
-msgstr ""
+msgstr "从磁盘重新加载已保存设计。如果您在游戏中手动添加它们，则适用。"
 
 msgid "TORPEDO CAPACITY OVERVIEW"
-msgstr ""
+msgstr "鱼雷容量预览"
 
 msgid "Shaft #01:"
-msgstr ""
+msgstr "发射架 #01"
 
 msgid "Shaft #02:"
-msgstr ""
+msgstr "发射架 #02"
 
 msgid "Shaft #03:"
-msgstr ""
+msgstr "发射架 #03"
 
 msgid "Shaft #04:"
-msgstr ""
+msgstr "发射架 #04"
 
 msgid "Shaft #05:"
-msgstr ""
+msgstr "发射架 #05"
 
 msgid "Shaft #06:"
-msgstr ""
+msgstr "发射架 #06"
 
 msgid "Shaft #07:"
-msgstr ""
+msgstr "发射架 #07"
 
 msgid "Shaft #08:"
-msgstr ""
+msgstr "发射架 #08"
 
 msgid "Shaft #09:"
-msgstr ""
+msgstr "发射架 #09"
 
 msgid "Shaft #10:"
-msgstr ""
+msgstr "发射架 #10"
 
 msgid "Torpedo Storage:"
-msgstr ""
+msgstr "鱼雷存储仓:"
 
 msgid "TORPEDO ASSEMBLY STATS"
-msgstr ""
+msgstr "鱼雷装配概况"
 
 msgid "Name:"
-msgstr ""
+msgstr "名称:"
 
 msgid "Rarity/Grade:"
-msgstr ""
+msgstr "稀有度/等级:"
 
 msgid "Damage Type:"
-msgstr ""
+msgstr "伤害类型:"
 
 msgid "Hull Damage:"
-msgstr ""
+msgstr "船体伤害:"
 
 msgid "Shield Damage:"
-msgstr ""
+msgstr "护盾伤害:"
 
 msgid "Velocity Factor:"
-msgstr ""
+msgstr "速度系数:"
 
 msgid "Size:"
-msgstr ""
+msgstr "大小:"
 
 msgid "Tech Level:"
-msgstr ""
+msgstr "科技等级:"
 
 msgid "Durability:"
-msgstr ""
+msgstr "耐久度:"
 
 msgid "Acceleration:"
-msgstr ""
+msgstr "加速性能:"
 
 msgid "Maneuverability:"
-msgstr ""
+msgstr "机动性能:"
 
 msgid "Max. Velocity:"
-msgstr ""
+msgstr "最大速度:"
 
 msgid "Max. Range:"
-msgstr ""
+msgstr "最大射程:"
 
 msgid "Penetrates Shield:"
-msgstr ""
+msgstr "护盾穿透:"
 
 msgid "Deactivates Shield:"
-msgstr ""
+msgstr "护盾停用:"
 
 msgid "Shield/Hull Damage:"
-msgstr ""
+msgstr "护盾/船体伤害:"
 
 msgid "Drains Energy:"
-msgstr ""
+msgstr "能量汲取:"
 
 msgid "Energy Usage:"
-msgstr ""
+msgstr "能量使用:"
 
 msgid "TORPEDO ASSEMBLY CONTROL"
-msgstr ""
+msgstr "鱼雷生产控制"
 
 msgid "ADD"
-msgstr ""
+msgstr "增加"
 
 msgid "REMOVE"
-msgstr ""
+msgstr "移除"
 
 msgid "STOP"
-msgstr ""
+msgstr "停止"
 
 msgid "REPEAT"
-msgstr ""
+msgstr "重复"
 
 msgid "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr ""
+msgstr "将选定数量的鱼雷添加到生产队列中。如果没有生成的鱼雷设计，或者您的船缺少组件或鱼雷存储块，将禁用。"
 
 msgid "Remove chosen torpedo production request from queue. Will be disabled, if there is nothing in queue."
-msgstr ""
+msgstr "从队列中删除选定的鱼雷生产请求。如果队列中没有任何内容，则将禁用。"
 
 msgid "Completely stop all production, clean up production queue and refund materials for all torpedoes in progress. Will be disabled, if nothing is produced."
-msgstr ""
+msgstr "完全停止所有生产，清理生产队列并为所有正在进行的鱼雷退还材料。 如果什么都没产生，将被禁用。"
 
 msgid "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr ""
+msgstr "自动继续生产选定的鱼雷设计。 如果没有生成鱼雷设计或者您的船缺少装配或鱼雷存储块，将被禁用。"
 
 msgid "Production Speed:"
-msgstr ""
+msgstr "生产速度:"
 
 msgid "Production Lines:"
-msgstr ""
+msgstr "生产线:"
 
 msgid "Required Effort:"
-msgstr ""
+msgstr "需求生产力:"
 
 msgid "Production Time:"
-msgstr ""
+msgstr "生产时间:"
 
 msgid "Designed torpedoes amount to queue for production. Limits depend on available materials. Up to 100 torpedoes per queue. Torpedoes that lack storage will halt production queue, unless stored or refunded."
-msgstr ""
+msgstr "设计的鱼雷相当于排队生产。 限制取决于可用的材料。 每个队列最多 100 枚鱼雷。 缺少存储的鱼雷将停止生产队列，除非存储或退款。"
 
 msgid "Iron Cost:"
-msgstr ""
+msgstr "铁金属消耗:"
 
 msgid "Titan. Cost:"
-msgstr ""
+msgstr "钛金属消耗:"
 
 msgid "Trin. Cost:"
-msgstr ""
+msgstr "淬尼金属消耗:"
 
 msgid "Ogon. Cost:"
-msgstr ""
+msgstr "欧格金属消耗:"
 
 msgid "Naon. Cost:"
-msgstr ""
+msgstr "纳奥金属消耗:"
 
 msgid "Xan. Cost:"
-msgstr ""
+msgstr "瑕恩金属消耗:"
 
 msgid "Avor. Cost:"
-msgstr ""
+msgstr "艾沃里翁消耗:"
