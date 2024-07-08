@@ -447,7 +447,20 @@ function TorpedoAssembly.processQueueLogic()
 						if self.torpProdQueueINT[pLine].cIdx == self.torpWaitQueueINT[pQueue].cIdx then
 							if self.torpWaitQueueINT[pQueue].tAmt > 0 then
 								if self.torpWaitQueueINT[pQueue].tRepeat then
-									local repeatAmount = TorpedoAssembly.checkResources({Player(callingPlayer):getResources()}, self.torpWaitQueueINT[pQueue].tCost)
+
+									---------------------------------------
+									local res
+									local playerToCheck = Player(callingPlayer)
+
+									if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck) then
+										res = {playerToCheck.alliance:getResources()}
+									else
+										res = {playerToCheck:getResources()}
+									end
+
+									local repeatAmount = TorpedoAssembly.checkResources(res, self.torpWaitQueueINT[pQueue].tCost)
+									---------------------------------------
+
 									if repeatAmount > 0 then
 										--TorpedoAssembly.dPrint("processQueueLogic() -> Found repeating Entry for Line #"..pLine.." from Queue #"..pQueue)
 										TorpedoAssembly.commandWithdrawCost(self.torpWaitQueueINT[pQueue].tCost, 1)
@@ -586,7 +599,13 @@ end
 
 function TorpedoAssembly.fetchPlayerData()
 	if player then
-		playerResource = {player:getResources()}
+		---------------------------------------
+		if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(player) then
+			playerResource = {player.alliance:getResources()}
+		else
+			playerResource = {player:getResources()}
+		end
+		---------------------------------------
 		if player.infiniteResources then
 			playerResource[1] = 1000000000
 			playerResource[2] = 1000000000
@@ -1228,6 +1247,13 @@ callable(TorpedoAssembly, "commandLoadClientData")
 
 function TorpedoAssembly.commandWithdrawCost(tCost, tAmt)
 	local refPlayer = Player(callingPlayer)
+
+	---------------------------------------
+	if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(refPlayer) then
+		refPlayer = refPlayer.alliance
+	end
+	---------------------------------------
+
 	if refPlayer and tAmt and tCost then
 		if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
 			refPlayer:pay("", 0, tCost[1] * tAmt, tCost[2] * tAmt, tCost[3] * tAmt,
@@ -1238,6 +1264,13 @@ end
 
 function TorpedoAssembly.commandRefundCost(tCost, tAmt)
 	local refPlayer = Player(callingPlayer)
+
+	---------------------------------------
+	if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(refPlayer) then
+		refPlayer = refPlayer.alliance
+	end
+	---------------------------------------
+
 	if refPlayer and tAmt and tCost then
 		if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
 			refPlayer:receive("", 0, tCost[1] * tAmt, tCost[2] * tAmt, tCost[3] * tAmt,
