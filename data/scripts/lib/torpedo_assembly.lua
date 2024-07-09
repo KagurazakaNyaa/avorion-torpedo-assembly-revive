@@ -29,7 +29,7 @@ self.torpWaitQueueINT = {} --{cIdx, tId, tName, tRarity, tWarhead, tBody, tAmt, 
 self.torpProdQueueINT = {} --{cIdx, cProdLine, cProdCap, cTech, tName, tRarity, tWarhead, tBody, tCost, tWork, tDone, tStatus}
 self.torpProdShipsINT = {} --{cIdx}
 
-local boolStr = { 
+local boolStr = {
 	[true] = "Yes",
 	[false] = "No",
 }
@@ -196,7 +196,7 @@ function TorpedoAssembly.update()
 				local hasRequiredBlocks = blocksAssembly > 0 and blocksTorpStorage > 0
 				if shipPlan and hasRequiredBlocks then
 					TorpedoAssembly.updateDesignerButtons(true)
-					if not torpDesign then 
+					if not torpDesign then
 						btnDesignerSave.active = false
 						btnAssemblerAdd.active = false
 						btnAssemblerRepeat.active = false
@@ -416,14 +416,14 @@ function TorpedoAssembly.processStoreLogic()
 	local emergencyCleanNeeded = false
 	if #self.torpProdQueueINT > 0 then
 		for pLine = 1, #self.torpProdQueueINT do
-			if self.torpProdQueueINT[pLine].tStatus == 2 or 
+			if self.torpProdQueueINT[pLine].tStatus == 2 or
 				self.torpProdQueueINT[pLine].tDone >= self.torpProdQueueINT[pLine].tWork then
-				local newTorp = TorpedoAssembly.commandGetTorpDesign(self.torpProdQueueINT[pLine].tRarity, 
-					self.torpProdQueueINT[pLine].tWarhead, 
-					self.torpProdQueueINT[pLine].tBody, 
+				local newTorp = TorpedoAssembly.commandGetTorpDesign(self.torpProdQueueINT[pLine].tRarity,
+					self.torpProdQueueINT[pLine].tWarhead,
+					self.torpProdQueueINT[pLine].tBody,
 					self.torpProdQueueINT[pLine].cTech)
 				local newStatus = TorpedoAssembly.commandSafeSendToStorage(newTorp, self.torpProdQueueINT[pLine].cIdx)
-				if newStatus == 4 then 
+				if newStatus == 4 then
 					self.torpProdQueueINT[pLine].tStatus = 2
 					emergencyCleanNeeded = true
 				else self.torpProdQueueINT[pLine].tStatus = newStatus end
@@ -476,7 +476,7 @@ function TorpedoAssembly.processQueueLogic()
 										foundNewEntry = true
 										break
 									end
-								else 
+								else
 									--TorpedoAssembly.dPrint("processQueueLogic() -> Found new Entry for Line #"..pLine.." from Queue #"..pQueue)
 									self.torpWaitQueueINT[pQueue].tAmt = self.torpWaitQueueINT[pQueue].tAmt - 1
 									self.torpProdQueueINT[pLine].tName = self.torpWaitQueueINT[pQueue].tName
@@ -518,7 +518,7 @@ function TorpedoAssembly.processWorkLogic()
 	timerLast = Server().unpausedRuntime
 	if #self.torpProdQueueINT > 0 then
 		for pLine = 1, #self.torpProdQueueINT do
-			if self.torpProdQueueINT[pLine].tStatus == 1 and 
+			if self.torpProdQueueINT[pLine].tStatus == 1 and
 				self.torpProdQueueINT[pLine].tDone < self.torpProdQueueINT[pLine].tWork then
 				self.torpProdQueueINT[pLine].tDone = self.torpProdQueueINT[pLine].tDone + self.torpProdQueueINT[pLine].cProdCap * timerDelta
 				if self.torpProdQueueINT[pLine].tDone > self.torpProdQueueINT[pLine].tWork then
@@ -776,7 +776,7 @@ end
 function TorpedoAssembly.updateTorpedoFactory()
 	if shipProdCapacity > 0 then torpFactory.pProdCap.caption = TorpedoAssembly.roundNum(shipProdCapacity).."/s"
 	else torpFactory.pProdCap.caption = "-/s" end
-	if shipProdLines > 0 then 
+	if shipProdLines > 0 then
 		torpFactory.pProdLines.caption = string.format("%.0f", shipProdLines)
 		for tSlot = 1, 5 do
 			if tSlot <= shipProdLines then
@@ -792,7 +792,7 @@ function TorpedoAssembly.updateTorpedoFactory()
 				torpFactorySlot[tSlot].torpName.caption = "N/A"
 			end
 		end
-	else 
+	else
 		torpFactory.pProdLines.caption = "?"
 		for tSlot = 1, 5 do
 			torpFactorySlot[tSlot].iconNum.color = tColor.Inactive
@@ -853,7 +853,7 @@ function TorpedoAssembly.updateTorpedoProdQueue()
 	timerLast = Client().unpausedRuntime
 	if player and #self.torpProdQueueEXT > 0 then
 		for pLine = 1, #self.torpProdQueueEXT do
-			if self.torpProdQueueEXT[pLine].tStatus == 1 and 
+			if self.torpProdQueueEXT[pLine].tStatus == 1 and
 				self.torpProdQueueEXT[pLine].tDone < self.torpProdQueueEXT[pLine].tWork then
 				self.torpProdQueueEXT[pLine].tDone = self.torpProdQueueEXT[pLine].tDone + self.torpProdQueueEXT[pLine].cProdCap * timerDelta
 				if self.torpProdQueueEXT[pLine].tDone > self.torpProdQueueEXT[pLine].tWork then
@@ -987,7 +987,7 @@ function TorpedoAssembly.actionDeleteDesign()
 	fStream:close()
 	fStream = io.output(io.open(filePath, "w"))
 	for sLine = 1, #tempStrStorage do
-		if sLine ~= refLine then 
+		if sLine ~= refLine then
 			fStream:write(tempStrStorage[sLine].."\n")
 		end
 	end
@@ -1141,7 +1141,7 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
 			end
 		end
 	end
-	if refreshExt and onServer() then 
+	if refreshExt and onServer() then
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
 		invokeClientFunction(Player(callingPlayer), "commandPushProdData", self.torpProdQueueEXT)
@@ -1169,7 +1169,7 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
 			end
 		end
 	end
-	if refreshExt and onServer() then 
+	if refreshExt and onServer() then
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		invokeClientFunction(Player(callingPlayer), "commandPushProdData", self.torpProdQueueEXT)
 	end
@@ -1188,7 +1188,7 @@ function TorpedoAssembly.commandRemoveFromQueue(entryId)
 			end
 		end
 	end
-	if refreshExt and onServer() then 
+	if refreshExt and onServer() then
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
 		invokeClientFunction(Player(callingPlayer), "commandPushWaitData", self.torpWaitQueueEXT)
 	end
@@ -1307,7 +1307,7 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
 				local foundLine = false
 				if #self.torpProdQueueINT > 0 then
 					for pEntry = 1, #self.torpProdQueueINT do
-						if self.torpProdQueueINT[pEntry].cIdx == refEntity.index.value and 
+						if self.torpProdQueueINT[pEntry].cIdx == refEntity.index.value and
 							self.torpProdQueueINT[pEntry].cProdLine == pLine then
 							self.torpProdQueueINT[pEntry].cProdCap = sProdCap
 							self.torpProdQueueINT[pEntry].cTech = refTech
@@ -1329,8 +1329,8 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
 		end
 		if #self.torpProdQueueINT > 0 then
 			for pDel = 1, #self.torpProdQueueINT do
-				if self.torpProdQueueINT[pDel] then 
-					if self.torpProdQueueINT[pDel].cIdx == refEntity.index.value and 
+				if self.torpProdQueueINT[pDel] then
+					if self.torpProdQueueINT[pDel].cIdx == refEntity.index.value and
 						self.torpProdQueueINT[pDel].cProdLine > sProdLines then
 						table.remove(self.torpProdQueueINT, pDel)
 					end
@@ -1417,7 +1417,7 @@ function TorpedoAssembly.commandGetTechLevel(entityIdx)
 	if shipTurrets and TorpedoAssembly.getTableSize(shipTurrets) > 0 then
 		for _, turret in pairs(shipTurrets) do
 			local weapon = Weapons(turret)
-			if weapon.averageTech > refTechLevel then 
+			if weapon.averageTech > refTechLevel then
 			refTechLevel = weapon.averageTech end
 		end
 	end
