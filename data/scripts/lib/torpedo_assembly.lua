@@ -435,6 +435,18 @@ function TorpedoAssembly.processStoreLogic()
 	return somethingHasChanged, emergencyCleanNeeded
 end
 
+function TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck)
+    local hasPrivileges = false
+    local alliance = playerToCheck.alliance
+
+    if alliance ~= nil then
+        hasPrivileges = alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.AddResources) and
+                        alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.SpendResources)
+    end
+
+    return hasPrivileges
+end
+
 function TorpedoAssembly.processQueueLogic()
 	local somethingHasChanged = false
 	if #self.torpProdQueueINT > 0 then
