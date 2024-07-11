@@ -390,7 +390,7 @@ function TorpedoAssembly.processFactoryLogic()
 	local changeClean = TorpedoAssembly.processCleanLogic()
 	TorpedoAssembly.processWorkLogic()
 	somethingHasChanged = changeStore or changeQueue or changeClean or mustClean
-    if onServer() and somethingHasChanged then
+	if onServer() and somethingHasChanged then
 		if mustClean then TorpedoAssembly.commandCleanShipList() end
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
@@ -436,22 +436,24 @@ function TorpedoAssembly.processStoreLogic()
 end
 
 function TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck)
-    local hasPrivileges = false
-    local alliance = playerToCheck.alliance
+	local hasPrivileges = false
+	local alliance = playerToCheck.alliance
 
-    if alliance ~= nil then
-        hasPrivileges = alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.AddResources) and
-                        alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.SpendResources)
-    end
+	if alliance ~= nil then
+		hasPrivileges = alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.AddResources) and
+						alliance:hasPrivilege(playerToCheck.index, AlliancePrivilege.SpendResources)
+	end
 
-    return hasPrivileges
+	return hasPrivileges
 end
 
 function TorpedoAssembly.isPlayerDriveAllianceShip(playerToCheck)
 	local isAllianceShip = false
 	local alliance = playerToCheck.alliance
+	local shipOwner = playerToCheck.craftFaction
 	if alliance ~= nil then
-		isAllianceShip = playerToCheck.craftFaction == alliance
+		isAllianceShip = shipOwner.isAlliance and
+						 shipOwner.index == alliance.index
 	end
 	return isAllianceShip
 end
@@ -1401,12 +1403,12 @@ function TorpedoAssembly.commandCleanShipList()
 			end
 		end
 	end
-    return dataChanged
+	return dataChanged
 end
 
 function TorpedoAssembly.commandRefreshShipList()
 	local dataChanged = TorpedoAssembly.commandCleanShipList()
-    if onServer() and dataChanged then
+	if onServer() and dataChanged then
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
 		invokeClientFunction(Player(callingPlayer), "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
@@ -1810,18 +1812,18 @@ function TorpedoAssembly.trimTrName(text)
 end
 
 function TorpedoAssembly.getTableSize(t)
-    local count = 0
-    for _, __ in pairs(t) do count = count + 1 end
-    return count
+	local count = 0
+	for _, __ in pairs(t) do count = count + 1 end
+	return count
 end
 
 function TorpedoAssembly.genNewId()
-    math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 9)))
-    local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-    return string.gsub(template, '[xy]', function (c)
-        local v = (c == 'x') and math.random(0, 0xf) or math.random(8, 0xb)
-        return string.format('%x', v)
-    end)
+	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 9)))
+	local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+	return string.gsub(template, '[xy]', function (c)
+		local v = (c == 'x') and math.random(0, 0xf) or math.random(8, 0xb)
+		return string.format('%x', v)
+	end)
 end
 
 function TorpedoAssembly.printSoMuch(text)
