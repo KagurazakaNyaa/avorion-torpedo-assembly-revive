@@ -4,7 +4,7 @@ meta =
     -- ID of your mod; Make sure this is unique!
     -- Will be used for identifying the mod in dependency lists
     -- Will be changed to workshop ID (ensuring uniqueness) when you upload the mod to the workshop
-    id = "torpedo-assembly-revive",
+    id = "3286774302",
 
     -- Name of your mod; You may want this to be unique, but it's not absolutely necessary.
     -- This is an additional helper attribute for you to easily identify your mod in the Mods() list
@@ -20,13 +20,13 @@ meta =
     description = "This mod allows you to assemble and produce torpedoes (based on unlocked material knowledge) on your ships that have assembly and torpedo storage blocks installed.",
 
     -- Insert all authors into this list
-    authors = {"WarStalkeR","KagurazakaNyaa"},
+    authors = {"WarStalkeR", "KagurazakaNyaa"},
 
     -- Version of your mod, should be in format 1.0.0 (major.minor.patch) or 1.0 (major.minor)
     -- This will be used to check for unmet dependencies or incompatibilities, and to check compatibility between clients and dedicated servers with mods.
     -- If a client with an unmatching major or minor mod version wants to log into a server, login is prohibited.
     -- Unmatching patch version still allows logging into a server. This works in both ways (server or client higher or lower version).
-    version = "2.0.0",
+    version = "2.0",
 
     -- If your mod requires dependencies, enter them here. The game will check that all dependencies given here are met.
     -- Possible attributes:
