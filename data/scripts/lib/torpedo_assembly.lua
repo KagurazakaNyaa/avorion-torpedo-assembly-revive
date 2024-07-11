@@ -447,6 +447,19 @@ function TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck)
     return hasPrivileges
 end
 
+function TorpedoAssembly.isPlayerDriveAllianceShip(playerToCheck)
+	local isAllianceShip = false
+	local alliance = playerToCheck.alliance
+	if alliance ~= nil then
+		isAllianceShip = playerToCheck.craftFaction == alliance
+	end
+	return isAllianceShip
+end
+
+function TorpedoAssembly.isPlayerUseAllianceResource(playerToCheck)
+	return TorpedoAssembly.isPlayerDriveAllianceShip(playerToCheck) and TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck)
+end
+
 function TorpedoAssembly.processQueueLogic()
 	local somethingHasChanged = false
 	if #self.torpProdQueueINT > 0 then
@@ -464,7 +477,7 @@ function TorpedoAssembly.processQueueLogic()
 									local res
 									local playerToCheck = Player(callingPlayer)
 
-									if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck) then
+									if TorpedoAssembly.isPlayerUseAllianceResource(playerToCheck) then
 										res = {playerToCheck.alliance:getResources()}
 									else
 										res = {playerToCheck:getResources()}
@@ -612,7 +625,7 @@ end
 function TorpedoAssembly.fetchPlayerData()
 	if player then
 		---------------------------------------
-		if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(player) then
+		if TorpedoAssembly.isPlayerUseAllianceResource(player) then
 			playerResource = {player.alliance:getResources()}
 		else
 			playerResource = {player:getResources()}
@@ -1261,7 +1274,7 @@ function TorpedoAssembly.commandWithdrawCost(tCost, tAmt)
 	local refPlayer = Player(callingPlayer)
 
 	---------------------------------------
-	if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(refPlayer) then
+	if TorpedoAssembly.isPlayerUseAllianceResource(refPlayer) then
 		refPlayer = refPlayer.alliance
 	end
 	---------------------------------------
@@ -1278,7 +1291,7 @@ function TorpedoAssembly.commandRefundCost(tCost, tAmt)
 	local refPlayer = Player(callingPlayer)
 
 	---------------------------------------
-	if TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(refPlayer) then
+	if TorpedoAssembly.isPlayerUseAllianceResource(refPlayer) then
 		refPlayer = refPlayer.alliance
 	end
 	---------------------------------------
