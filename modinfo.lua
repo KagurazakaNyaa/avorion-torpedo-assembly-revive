@@ -1,4 +1,3 @@
-
 meta =
 {
     -- ID of your mod; Make sure this is unique!
@@ -17,16 +16,17 @@ meta =
     type = "mod",
 
     -- Description of your mod that will be displayed to players
-    description = "This mod allows you to assemble and produce torpedoes (based on unlocked material knowledge) on your ships that have assembly and torpedo storage blocks installed.",
+    description =
+    "This mod allows you to assemble and produce torpedoes (based on unlocked material knowledge) on your ships that have assembly and torpedo storage blocks installed.",
 
     -- Insert all authors into this list
-    authors = {"WarStalkeR", "KagurazakaNyaa"},
+    authors = { "WarStalkeR", "KagurazakaNyaa" },
 
     -- Version of your mod, should be in format 1.0.0 (major.minor.patch) or 1.0 (major.minor)
     -- This will be used to check for unmet dependencies or incompatibilities, and to check compatibility between clients and dedicated servers with mods.
     -- If a client with an unmatching major or minor mod version wants to log into a server, login is prohibited.
     -- Unmatching patch version still allows logging into a server. This works in both ways (server or client higher or lower version).
-    version = "2.0",
+    version = "2.1",
 
     -- If your mod requires dependencies, enter them here. The game will check that all dependencies given here are met.
     -- Possible attributes:
@@ -44,7 +44,7 @@ meta =
     --      {id = "OptionalMod", min = "0.2", optional = true}, -- we support OptionalMod optionally, starting at version 0.2
     -- },
     dependencies = {
-        {id = "Avorion", min = "1.0", max = "3.0"}
+        { id = "Avorion", min = "1.0", max = "3.0" }
     },
 
     -- Set to true if the mod only has to run on the server. Clients will get notified that the mod is running on the server, but they won't download it to themselves
