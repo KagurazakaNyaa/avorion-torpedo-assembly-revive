@@ -25,8 +25,8 @@ local Bodies = TorpedoUtility.Bodies
 
 self.torpWaitQueueEXT = {} --{cIdx, tId, tName, tAmt, tRepeat}
 self.torpProdQueueEXT = {} --{cIdx, cProdLine, cProdCap, tName, tWork, tDone, tStatus}
-self.torpWaitQueueINT = {} --{cIdx, tId, tName, tRarity, tWarhead, tBody, tAmt, tCost, tRepeat}
-self.torpProdQueueINT = {} --{cIdx, cProdLine, cProdCap, cTech, tName, tRarity, tWarhead, tBody, tCost, tWork, tDone, tStatus}
+self.torpWaitQueueINT = {} --{cIdx, tId, tName, tRarity, tWarhead, tBody, tAmt, tCost, tRepeat, pPayerIndex, pPayerIsAlliance}
+self.torpProdQueueINT = {} --{cIdx, cProdLine, cProdCap, cTech, tName, tRarity, tWarhead, tBody, tCost, tWork, tDone, tStatus, pPayerIndex, pPayerIsAlliance}
 self.torpProdShipsINT = {} --{cIdx}
 
 local boolStr = {
@@ -391,17 +391,20 @@ function TorpedoAssembly.processFactoryLogic()
 	TorpedoAssembly.processWorkLogic()
 	somethingHasChanged = changeStore or changeQueue or changeClean or mustClean
 	if onServer() and somethingHasChanged then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		if mustClean then TorpedoAssembly.commandCleanShipList() end
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
+		if targetPlayer then
+			invokeClientFunction(targetPlayer, "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
+		end
 	end
 end
 
 function TorpedoAssembly.processCleanLogic()
 	local somethingHasChanged = false
 	if #self.torpWaitQueueINT > 0 then
-		for pQueue = 1, #self.torpWaitQueueINT do
+		for pQueue = #self.torpWaitQueueINT, 1, -1 do
 			if self.torpWaitQueueINT[pQueue] and self.torpWaitQueueINT[pQueue].tAmt <= 0 then
 				--TorpedoAssembly.dPrint("processCleanLogic() -> Cleaning Void Entry #"..pQueue)
 				table.remove(self.torpWaitQueueINT, pQueue)
@@ -462,6 +465,48 @@ function TorpedoAssembly.isPlayerUseAllianceResource(playerToCheck)
 	return TorpedoAssembly.isPlayerDriveAllianceShip(playerToCheck) and TorpedoAssembly.isPlayerInAllianceAndHasPrivileges(playerToCheck)
 end
 
+function TorpedoAssembly.getOwnerPlayer()
+	if onServer() and callingPlayer then return Player(callingPlayer) end
+	return Player()
+end
+
+function TorpedoAssembly.getClientTargetPlayer()
+	local ownerPlayer = Player()
+	if ownerPlayer then return ownerPlayer end
+	if callingPlayer then return Player(callingPlayer) end
+	return nil
+end
+
+function TorpedoAssembly.getPayerInfo(refPlayer)
+	local payerInfo = {pPayerIndex = nil, pPayerIsAlliance = false}
+	if not refPlayer then return payerInfo end
+	if TorpedoAssembly.isPlayerUseAllianceResource(refPlayer) then
+		payerInfo.pPayerIsAlliance = true
+		payerInfo.pPayerIndex = refPlayer.allianceIndex
+	else
+		payerInfo.pPayerIndex = refPlayer.index
+	end
+	return payerInfo
+end
+
+function TorpedoAssembly.getPayerObject(payerData)
+	if not payerData or not payerData.pPayerIndex then
+		local ownerPlayer = TorpedoAssembly.getOwnerPlayer()
+		if not ownerPlayer then return nil end
+		payerData = TorpedoAssembly.getPayerInfo(ownerPlayer)
+	end
+	if payerData.pPayerIsAlliance then return Alliance(payerData.pPayerIndex) end
+	return Player(payerData.pPayerIndex)
+end
+
+function TorpedoAssembly.getPayerResources(payerData)
+	local payerObject = TorpedoAssembly.getPayerObject(payerData)
+	if not payerObject then return nil end
+	local resources = {payerObject:getResources()}
+	resources.infinite = payerObject.infiniteResources or false
+	return resources
+end
+
 function TorpedoAssembly.processQueueLogic()
 	local somethingHasChanged = false
 	if #self.torpProdQueueINT > 0 then
@@ -473,31 +518,25 @@ function TorpedoAssembly.processQueueLogic()
 					for pQueue = 1, #self.torpWaitQueueINT do
 						if self.torpProdQueueINT[pLine].cIdx == self.torpWaitQueueINT[pQueue].cIdx then
 							if self.torpWaitQueueINT[pQueue].tAmt > 0 then
-								if self.torpWaitQueueINT[pQueue].tRepeat then
+							if self.torpWaitQueueINT[pQueue].tRepeat then
 
-									---------------------------------------
-									local res
-									local playerToCheck = Player(callingPlayer)
+								---------------------------------------
+								local res = TorpedoAssembly.getPayerResources(self.torpWaitQueueINT[pQueue])
+								local repeatAmount = TorpedoAssembly.checkResources(res, self.torpWaitQueueINT[pQueue].tCost)
+								---------------------------------------
 
-									if TorpedoAssembly.isPlayerUseAllianceResource(playerToCheck) then
-										res = {playerToCheck.alliance:getResources()}
-									else
-										res = {playerToCheck:getResources()}
-									end
-
-									local repeatAmount = TorpedoAssembly.checkResources(res, self.torpWaitQueueINT[pQueue].tCost)
-									---------------------------------------
-
-									if repeatAmount > 0 then
-										--TorpedoAssembly.dPrint("processQueueLogic() -> Found repeating Entry for Line #"..pLine.." from Queue #"..pQueue)
-										TorpedoAssembly.commandWithdrawCost(self.torpWaitQueueINT[pQueue].tCost, 1)
-										self.torpProdQueueINT[pLine].tName = self.torpWaitQueueINT[pQueue].tName
-										self.torpProdQueueINT[pLine].tRarity = self.torpWaitQueueINT[pQueue].tRarity
-										self.torpProdQueueINT[pLine].tWarhead = self.torpWaitQueueINT[pQueue].tWarhead
-										self.torpProdQueueINT[pLine].tBody = self.torpWaitQueueINT[pQueue].tBody
-										self.torpProdQueueINT[pLine].tCost = self.torpWaitQueueINT[pQueue].tCost
-										self.torpProdQueueINT[pLine].tWork = self.torpProdQueueINT[pLine].tCost[0]
-										self.torpProdQueueINT[pLine].tDone = 0
+								if repeatAmount > 0 then
+									--TorpedoAssembly.dPrint("processQueueLogic() -> Found repeating Entry for Line #"..pLine.." from Queue #"..pQueue)
+									TorpedoAssembly.commandWithdrawCost(self.torpWaitQueueINT[pQueue].tCost, 1, self.torpWaitQueueINT[pQueue])
+									self.torpProdQueueINT[pLine].tName = self.torpWaitQueueINT[pQueue].tName
+									self.torpProdQueueINT[pLine].tRarity = self.torpWaitQueueINT[pQueue].tRarity
+									self.torpProdQueueINT[pLine].tWarhead = self.torpWaitQueueINT[pQueue].tWarhead
+									self.torpProdQueueINT[pLine].tBody = self.torpWaitQueueINT[pQueue].tBody
+									self.torpProdQueueINT[pLine].tCost = self.torpWaitQueueINT[pQueue].tCost
+									self.torpProdQueueINT[pLine].pPayerIndex = self.torpWaitQueueINT[pQueue].pPayerIndex
+									self.torpProdQueueINT[pLine].pPayerIsAlliance = self.torpWaitQueueINT[pQueue].pPayerIsAlliance
+									self.torpProdQueueINT[pLine].tWork = self.torpProdQueueINT[pLine].tCost[0]
+									self.torpProdQueueINT[pLine].tDone = 0
 										self.torpProdQueueINT[pLine].tStatus = 1
 										somethingHasChanged = true
 										foundNewEntry = true
@@ -511,6 +550,8 @@ function TorpedoAssembly.processQueueLogic()
 									self.torpProdQueueINT[pLine].tWarhead = self.torpWaitQueueINT[pQueue].tWarhead
 									self.torpProdQueueINT[pLine].tBody = self.torpWaitQueueINT[pQueue].tBody
 									self.torpProdQueueINT[pLine].tCost = self.torpWaitQueueINT[pQueue].tCost
+									self.torpProdQueueINT[pLine].pPayerIndex = self.torpWaitQueueINT[pQueue].pPayerIndex
+									self.torpProdQueueINT[pLine].pPayerIsAlliance = self.torpWaitQueueINT[pQueue].pPayerIsAlliance
 									self.torpProdQueueINT[pLine].tWork = self.torpProdQueueINT[pLine].tCost[0]
 									self.torpProdQueueINT[pLine].tDone = 0
 									self.torpProdQueueINT[pLine].tStatus = 1
@@ -529,6 +570,8 @@ function TorpedoAssembly.processQueueLogic()
 					self.torpProdQueueINT[pLine].tWarhead = -1
 					self.torpProdQueueINT[pLine].tBody = -1
 					self.torpProdQueueINT[pLine].tCost = {}
+					self.torpProdQueueINT[pLine].pPayerIndex = nil
+					self.torpProdQueueINT[pLine].pPayerIsAlliance = false
 					self.torpProdQueueINT[pLine].tWork = 1
 					self.torpProdQueueINT[pLine].tDone = 0
 					self.torpProdQueueINT[pLine].tStatus = 0
@@ -633,6 +676,7 @@ function TorpedoAssembly.fetchPlayerData()
 			playerResource = {player:getResources()}
 		end
 		---------------------------------------
+		playerResource.infinite = player.infiniteResources
 		if player.infiniteResources then
 			playerResource[1] = 1000000000
 			playerResource[2] = 1000000000
@@ -649,18 +693,16 @@ function TorpedoAssembly.checkDiskPermissions()
 	if not onClient() then return end
 	local fExist = io.open(filePath, "a")
 	if not fExist then
-		if pcall(io.open(filePath, "w")) == false then
-			diskPermissions = false
-			print("Warning! Torpedo Assembler is missing disk read/write permissions!")
-			return
-		end
-		local fNew = io.output(io.open(filePath, "w"))
-		fNew:close()
+		diskPermissions = false
+		print("Warning! Torpedo Assembler is missing disk read/write permissions!")
+		return
 	end
+	fExist:close()
 end
 
 function TorpedoAssembly.checkResources(pResource, tCost)
-	if onServer() and Player(callingPlayer).infiniteResources then return 100 end
+	if not pResource or not tCost then return 0 end
+	if pResource.infinite then return 100 end
 	local tAmount = 100
 	for mType = 1, 7 do
 		local pLimit = math.min(math.floor(pResource[mType] / tCost[mType]), 100)
@@ -670,7 +712,7 @@ function TorpedoAssembly.checkResources(pResource, tCost)
 end
 
 function TorpedoAssembly.checkKnowledge(idxRarity, idxWarhead, idxBody)
-	local matPlayer = Player(callingPlayer)
+	local matPlayer = TorpedoAssembly.getOwnerPlayer()
 	local matRarity, matWarhead, matBody = TorpedoAssembly.getMaterialFromIndex(idxRarity, idxWarhead, idxBody)
 	local matRarityKnw = KnowledgeUtility.hasKnowledge(matPlayer, Material(matRarity))
 	local matWarheadKnw = KnowledgeUtility.hasKnowledge(matPlayer, Material(matWarhead))
@@ -1009,7 +1051,7 @@ function TorpedoAssembly.actionDeleteDesign()
 	end
 	local tempStrStorage = {}
 	local refLine = listTorpDesigns.selected + 1
-	local fStream = io.output(io.open(filePath, "r"))
+	local fStream = io.open(filePath, "r")
 	for rLine in io.lines(filePath) do table.insert(tempStrStorage, rLine) end
 	fStream:close()
 	fStream = io.output(io.open(filePath, "w"))
@@ -1142,10 +1184,10 @@ end
 function TorpedoAssembly.commandStopFactory(craftIdx)
 	local refreshExt = false
 	if #self.torpWaitQueueINT > 0 then
-		for pQueue = 1, #self.torpWaitQueueINT do
+		for pQueue = #self.torpWaitQueueINT, 1, -1 do
 			if self.torpWaitQueueINT[pQueue] then
 				if self.torpWaitQueueINT[pQueue].cIdx == craftIdx then
-					if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt) end
+					if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt, self.torpWaitQueueINT[pQueue]) end
 					table.remove(self.torpWaitQueueINT, pQueue)
 					refreshExt = true
 				end
@@ -1155,12 +1197,14 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
 	if #self.torpProdQueueINT > 0 then
 		for pLine = 1, #self.torpProdQueueINT do
 			if self.torpProdQueueINT[pLine].cIdx == craftIdx then
-				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1)
+				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
 				self.torpProdQueueINT[pLine].tName = "N/A"
 				self.torpProdQueueINT[pLine].tRarity = -1
 				self.torpProdQueueINT[pLine].tWarhead = -1
 				self.torpProdQueueINT[pLine].tBody = -1
 				self.torpProdQueueINT[pLine].tCost = {}
+				self.torpProdQueueINT[pLine].pPayerIndex = nil
+				self.torpProdQueueINT[pLine].pPayerIsAlliance = false
 				self.torpProdQueueINT[pLine].tWork = 1
 				self.torpProdQueueINT[pLine].tDone = 0
 				self.torpProdQueueINT[pLine].tStatus = 0
@@ -1169,10 +1213,13 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
 		end
 	end
 	if refreshExt and onServer() then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandPushProdData", self.torpProdQueueEXT)
-		invokeClientFunction(Player(callingPlayer), "commandPushWaitData", self.torpWaitQueueEXT)
+		if targetPlayer then
+			invokeClientFunction(targetPlayer, "commandPushProdData", self.torpProdQueueEXT)
+			invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT)
+		end
 	end
 end
 callable(TorpedoAssembly, "commandStopFactory")
@@ -1183,12 +1230,14 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
 		for pLine = 1, #self.torpProdQueueINT do
 			if self.torpProdQueueINT[pLine].cIdx == craftIdx and
 				self.torpProdQueueINT[pLine].cProdLine == numLine then
-				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1)
+				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
 				self.torpProdQueueINT[pLine].tName = "N/A"
 				self.torpProdQueueINT[pLine].tRarity = -1
 				self.torpProdQueueINT[pLine].tWarhead = -1
 				self.torpProdQueueINT[pLine].tBody = -1
 				self.torpProdQueueINT[pLine].tCost = {}
+				self.torpProdQueueINT[pLine].pPayerIndex = nil
+				self.torpProdQueueINT[pLine].pPayerIsAlliance = false
 				self.torpProdQueueINT[pLine].tWork = 1
 				self.torpProdQueueINT[pLine].tDone = 0
 				self.torpProdQueueINT[pLine].tStatus = 0
@@ -1197,8 +1246,9 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
 		end
 	end
 	if refreshExt and onServer() then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandPushProdData", self.torpProdQueueEXT)
+		if targetPlayer then invokeClientFunction(targetPlayer, "commandPushProdData", self.torpProdQueueEXT) end
 	end
 end
 callable(TorpedoAssembly, "commandRemoveFromLine")
@@ -1208,7 +1258,7 @@ function TorpedoAssembly.commandRemoveFromQueue(entryId)
 	if #self.torpWaitQueueINT > 0 then
 		for pQueue = 1, #self.torpWaitQueueINT do
 			if self.torpWaitQueueINT[pQueue].tId == entryId then
-				if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt) end
+				if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt, self.torpWaitQueueINT[pQueue]) end
 				table.remove(self.torpWaitQueueINT, pQueue)
 				refreshExt = true
 				break
@@ -1216,27 +1266,32 @@ function TorpedoAssembly.commandRemoveFromQueue(entryId)
 		end
 	end
 	if refreshExt and onServer() then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandPushWaitData", self.torpWaitQueueEXT)
+		if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
 	end
 end
 callable(TorpedoAssembly, "commandRemoveFromQueue")
 
 function TorpedoAssembly.commandAddToQueue(rarityIdx, warheadIdx, bodyIdx, craftIdx, tAmount, setRepeat)
 	if torpDesign then
+		local actorPlayer = TorpedoAssembly.getOwnerPlayer()
+		local payerInfo = TorpedoAssembly.getPayerInfo(actorPlayer)
 		TorpedoAssembly.fetchPlayerData()
-		newTorpId = TorpedoAssembly.genNewId()
+		local newTorpId = TorpedoAssembly.genNewId()
 		torpCost = TorpedoAssembly.calculateTorpedoCost(rarityIdx, warheadIdx, bodyIdx, torpDesign.tech)
 		tAmount = math.min(TorpedoAssembly.checkResources(playerResource, torpCost), tAmount)
 		local meetsReqs = TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx)
 		if meetsReqs and tAmount > 0 then
-			if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount) end
+			if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
 			table.insert(self.torpWaitQueueINT,{cIdx = craftIdx, tId = newTorpId,
 			tName = torpDesign.name, tRarity = rarityIdx, tWarhead = warheadIdx,
-			tBody = bodyIdx, tAmt = tAmount, tCost = torpCost, tRepeat = setRepeat})
+			tBody = bodyIdx, tAmt = tAmount, tCost = torpCost, tRepeat = setRepeat,
+			pPayerIndex = payerInfo.pPayerIndex, pPayerIsAlliance = payerInfo.pPayerIsAlliance})
 			if onServer() then
+				local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 				self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-				invokeClientFunction(Player(callingPlayer), "commandPushWaitData", self.torpWaitQueueEXT)
+				if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
 			end
 		end
 	end
@@ -1257,9 +1312,10 @@ callable(TorpedoAssembly, "commandPushProdData")
 
 function TorpedoAssembly.commandSendClientData()
 	if onServer() then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
+		if targetPlayer then invokeClientFunction(targetPlayer, "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT) end
 	end
 end
 callable(TorpedoAssembly, "commandSendClientData")
@@ -1272,14 +1328,8 @@ function TorpedoAssembly.commandLoadClientData(waitQueue, prodQueue)
 end
 callable(TorpedoAssembly, "commandLoadClientData")
 
-function TorpedoAssembly.commandWithdrawCost(tCost, tAmt)
-	local refPlayer = Player(callingPlayer)
-
-	---------------------------------------
-	if TorpedoAssembly.isPlayerUseAllianceResource(refPlayer) then
-		refPlayer = refPlayer.alliance
-	end
-	---------------------------------------
+function TorpedoAssembly.commandWithdrawCost(tCost, tAmt, payerData)
+	local refPlayer = TorpedoAssembly.getPayerObject(payerData)
 
 	if refPlayer and tAmt and tCost then
 		if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
@@ -1289,14 +1339,8 @@ function TorpedoAssembly.commandWithdrawCost(tCost, tAmt)
 	end
 end
 
-function TorpedoAssembly.commandRefundCost(tCost, tAmt)
-	local refPlayer = Player(callingPlayer)
-
-	---------------------------------------
-	if TorpedoAssembly.isPlayerUseAllianceResource(refPlayer) then
-		refPlayer = refPlayer.alliance
-	end
-	---------------------------------------
+function TorpedoAssembly.commandRefundCost(tCost, tAmt, payerData)
+	local refPlayer = TorpedoAssembly.getPayerObject(payerData)
 
 	if refPlayer and tAmt and tCost then
 		if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
@@ -1317,7 +1361,8 @@ function TorpedoAssembly.commandSyncProdShips(entityIdx)
 					break
 				end
 			end
-		elseif not foundShip then
+		end
+		if not foundShip then
 			table.insert(self.torpProdShipsINT, {cIdx = refEntity.index.value})
 		end
 	end
@@ -1355,7 +1400,7 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
 			end
 		end
 		if #self.torpProdQueueINT > 0 then
-			for pDel = 1, #self.torpProdQueueINT do
+			for pDel = #self.torpProdQueueINT, 1, -1 do
 				if self.torpProdQueueINT[pDel] then
 					if self.torpProdQueueINT[pDel].cIdx == refEntity.index.value and
 						self.torpProdQueueINT[pDel].cProdLine > sProdLines then
@@ -1380,20 +1425,20 @@ end
 function TorpedoAssembly.commandCleanShipList()
 	local dataChanged = false
 	if #self.torpProdShipsINT > 0 then
-		for iShip = 1, #self.torpProdShipsINT do
+		for iShip = #self.torpProdShipsINT, 1, -1 do
 			if self.torpProdShipsINT[iShip] and self.torpProdShipsINT[iShip].cIdx then
 				local refShip = Entity(self.torpProdShipsINT[iShip].cIdx)
 				if not refShip then
-					for iQueue = 1, #self.torpWaitQueueINT do
+					for iQueue = #self.torpWaitQueueINT, 1, -1 do
 						if self.torpWaitQueueINT[iQueue] and self.torpWaitQueueINT[iQueue].cIdx == self.torpProdShipsINT[iShip].cIdx then
-							if not self.torpWaitQueueINT[iQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[iQueue].tCost, self.torpWaitQueueINT[iQueue].tAmt) end
+							if not self.torpWaitQueueINT[iQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[iQueue].tCost, self.torpWaitQueueINT[iQueue].tAmt, self.torpWaitQueueINT[iQueue]) end
 							table.remove(self.torpWaitQueueINT, iQueue)
 							dataChanged = true
 						end
 					end
-					for iProd = 1, #self.torpProdQueueINT do
+					for iProd = #self.torpProdQueueINT, 1, -1 do
 						if self.torpProdQueueINT[iProd] and self.torpProdQueueINT[iProd].cIdx == self.torpProdShipsINT[iShip].cIdx then
-							TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[iProd].tCost, 1)
+							TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[iProd].tCost, 1, self.torpProdQueueINT[iProd])
 							table.remove(self.torpProdQueueINT, iProd)
 							dataChanged = true
 						end
@@ -1409,9 +1454,10 @@ end
 function TorpedoAssembly.commandRefreshShipList()
 	local dataChanged = TorpedoAssembly.commandCleanShipList()
 	if onServer() and dataChanged then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
 		self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
 		self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-		invokeClientFunction(Player(callingPlayer), "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
+		if targetPlayer then invokeClientFunction(targetPlayer, "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT) end
 	end
 end
 
@@ -1419,18 +1465,21 @@ function TorpedoAssembly.commandGenerateDesign(rarityIdx, warheadIdx, bodyIdx)
 	torpIndexRarity = rarityIdx
 	torpIndexWarhead = warheadIdx
 	torpIndexBody = bodyIdx
-	player = Player(callingPlayer)
+	player = TorpedoAssembly.getOwnerPlayer()
 	TorpedoAssembly.commandSyncProdShips(player.craftIndex)
 	TorpedoAssembly.commandSyncProdPower(player.craftIndex)
-	shipTechLevel = TorpedoAssembly.commandGetTechLevel(player.craftIndex)
+	local shipTechLevel = TorpedoAssembly.commandGetTechLevel(player.craftIndex)
 	local torpData = TorpedoAssembly.commandGetTorpDesign(torpIndexRarity, torpIndexWarhead, torpIndexBody, shipTechLevel)
-	if onServer() then invokeClientFunction(Player(callingPlayer), "commandUpdateStatsData", torpData) end
+	if onServer() then
+		local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
+		if targetPlayer then invokeClientFunction(targetPlayer, "commandUpdateStatsData", torpData) end
+	end
 	torpDesign = torpData
 end
 callable(TorpedoAssembly, "commandGenerateDesign")
 
 function TorpedoAssembly.commandAddStoreTorpedo()
-	player = Player(callingPlayer)
+	player = TorpedoAssembly.getOwnerPlayer()
 	if torpDesign and player then
 		TorpedoAssembly.commandSafeSendToStorage(torpDesign, player.craftIndex.value)
 	end
@@ -1464,7 +1513,7 @@ function TorpedoAssembly.commandSafeSendToStorage(refTorpData, craftIndex)
 	local targetRefShip = Entity(craftIndex)
 	if not targetRefShip then return 4 end
 	local targetShipLauncher = TorpedoLauncher(targetRefShip)
-	if targetShipLauncher.freeStorage > refTorpData.size then
+	if targetShipLauncher.freeStorage >= refTorpData.size then
 		targetShipLauncher:addTorpedo(refTorpData)
 		return 3
 	else return 2 end
@@ -1483,16 +1532,29 @@ function TorpedoAssembly.commandLoadTorpDesigns()
 		print("Warning! Torpedo Assembler is missing disk read/write permissions!")
 		return
 	end
-	local fStream = io.output(io.open(filePath, "r"))
+	local fStream = io.open(filePath, "r")
 	for fLine in io.lines(filePath) do
 		if string.len(fLine) > 20 and string.sub(fLine,1,10) == "{[\"name\"]=" then
-			fLine = fLine:gsub('(".-"):(.-),','[%1]=%2,\n')
-			local tData = loadstring("return "..fLine)()
-			table.insert(storedDesigns, tData)
+			local tData = TorpedoAssembly.parseStoredDesign(fLine)
+			if tData then table.insert(storedDesigns, tData) end
 		end
 	end
 	fStream:close()
 	TorpedoAssembly.updateTorpedoDesigns()
+end
+
+function TorpedoAssembly.parseStoredDesign(dataLine)
+	local name = dataLine:match('%["name"%]="([^"]+)"')
+	local rarityIndex = tonumber(dataLine:match('%["rarityIndex"%]=(-?%d+)'))
+	local warheadIndex = tonumber(dataLine:match('%["warheadIndex"%]=(-?%d+)'))
+	local bodyIndex = tonumber(dataLine:match('%["bodyIndex"%]=(-?%d+)'))
+	if not name or rarityIndex == nil or warheadIndex == nil or bodyIndex == nil then return nil end
+	return {
+		name = name,
+		rarityIndex = rarityIndex,
+		warheadIndex = warheadIndex,
+		bodyIndex = bodyIndex,
+	}
 end
 
 function TorpedoAssembly.getRarityColor(rarityIdx)
