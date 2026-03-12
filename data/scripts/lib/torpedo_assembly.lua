@@ -10,8 +10,6 @@ package.path = package.path .. ";data/scripts/?.lua"
 
 include("utility")
 include("callable")
-include("weapontype")
-include("tooltipmaker")
 include("damagetypeutility")
 
 local self = TorpedoAssembly
