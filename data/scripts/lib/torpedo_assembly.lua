@@ -153,7 +153,8 @@ function TorpedoAssembly.initialize()
 	if onServer() and timerLast == 0 then timerLast = Server().unpausedRuntime end
 	if onClient() then
 		player = Player()
-		if player then TorpedoAssembly.fetchCoreData() end
+		if not player then return end
+		TorpedoAssembly.fetchCoreData()
 		player:registerCallback("onShipChanged", "onShipChanged")
 		tabTorpAsm = ShipWindow():createTab("Torpedo Assembly"%_t, "data/textures/icons/torp-assembly.png", "Torpedo Assembly"%_t)
 		local secTorpAsmCore = UIVerticalLister(Rect(tabTorpAsm.size), 10, 0)
