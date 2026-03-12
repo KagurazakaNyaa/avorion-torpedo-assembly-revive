@@ -148,9 +148,56 @@ local torpFactory = {}
 local torpStats = {}
 local torpCost = {}
 
+local function getClientRuntime()
+	local client = Client()
+	if not client then return 0 end
+	return client.unpausedRuntime
+end
+
+local function getServerRuntime()
+	local server = Server()
+	if not server then return 0 end
+	return server.unpausedRuntime
+end
+
+local function getMaterialKnowledgeFlags(refPlayer)
+	if not refPlayer then
+		return {
+			titanium = false,
+			naonite = false,
+			trinium = false,
+			xanion = false,
+			ogonite = false,
+			avorion = false,
+		}
+	end
+
+	return {
+		titanium = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Titanium)),
+		naonite = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Naonite)),
+		trinium = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Trinium)),
+		xanion = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Xanion)),
+		ogonite = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Ogonite)),
+		avorion = KnowledgeUtility.hasKnowledge(refPlayer, Material(MaterialType.Avorion)),
+	}
+end
+
+local function resetProductionLine(lineData)
+	lineData.tName = "N/A"
+	lineData.tRarity = -1
+	lineData.tWarhead = -1
+	lineData.tBody = -1
+	lineData.tCost = {}
+	lineData.pPayerIndex = nil
+	lineData.pPayerIsAlliance = false
+	lineData.tWork = 1
+	lineData.tDone = 0
+	lineData.tStatus = 0
+end
+
 function TorpedoAssembly.initialize()
-	if onClient() and timerLast == 0 then timerLast = Client().unpausedRuntime end
-	if onServer() and timerLast == 0 then timerLast = Server().unpausedRuntime end
+	if onClient() and timerLast == 0 then timerLast = getClientRuntime() end
+	if onServer() and timerLast == 0 then timerLast = getServerRuntime() end
 	if onClient() then
 		player = Player()
 		if not player then return end
@@ -175,8 +222,8 @@ function TorpedoAssembly.initialize()
 end
 
 function TorpedoAssembly.update()
-	if onClient() and timerLast == 0 then timerLast = Client().unpausedRuntime end
-	if onServer() and timerLast == 0 then timerLast = Server().unpausedRuntime end
+	if onClient() and timerLast == 0 then timerLast = getClientRuntime() end
+	if onServer() and timerLast == 0 then timerLast = getServerRuntime() end
 	if onClient() then
 		if tabTorpAsm and tabTorpAsm.isActiveTab then
 			countUI = countUI + 1
@@ -568,16 +615,7 @@ function TorpedoAssembly.processQueueLogic()
 				end
 				if not foundNewEntry then
 					--TorpedoAssembly.dPrint("processQueueLogic() -> No Entries. Idling Line #"..pLine)
-					self.torpProdQueueINT[pLine].tName = "N/A"
-					self.torpProdQueueINT[pLine].tRarity = -1
-					self.torpProdQueueINT[pLine].tWarhead = -1
-					self.torpProdQueueINT[pLine].tBody = -1
-					self.torpProdQueueINT[pLine].tCost = {}
-					self.torpProdQueueINT[pLine].pPayerIndex = nil
-					self.torpProdQueueINT[pLine].pPayerIsAlliance = false
-					self.torpProdQueueINT[pLine].tWork = 1
-					self.torpProdQueueINT[pLine].tDone = 0
-					self.torpProdQueueINT[pLine].tStatus = 0
+					resetProductionLine(self.torpProdQueueINT[pLine])
 					somethingHasChanged = true
 				end
 			end
@@ -587,8 +625,9 @@ function TorpedoAssembly.processQueueLogic()
 end
 
 function TorpedoAssembly.processWorkLogic()
-	timerDelta = Server().unpausedRuntime - timerLast
-	timerLast = Server().unpausedRuntime
+	local runtime = getServerRuntime()
+	timerDelta = runtime - timerLast
+	timerLast = runtime
 	if #self.torpProdQueueINT > 0 then
 		for pLine = 1, #self.torpProdQueueINT do
 			if self.torpProdQueueINT[pLine].tStatus == 1 and
@@ -760,39 +799,40 @@ function TorpedoAssembly.updateProdDeleteButton()
 end
 
 function TorpedoAssembly.updateAvailableConfigs()
+	local materialKnowledge = getMaterialKnowledgeFlags(player)
 	if listTorpBody then
 		listTorpBody:clear()
 		listTorpBody:addEntry(Bodies[BDRef.Orca].name%_t, mColor.Iron)
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Titanium)) then listTorpBody:addEntry(Bodies[BDRef.Hammerhead].name%_t, mColor.Titanium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Naonite)) then listTorpBody:addEntry(Bodies[BDRef.Stingray].name%_t, mColor.Naonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Naonite)) then listTorpBody:addEntry(Bodies[BDRef.Ocelot].name%_t, mColor.Naonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Trinium)) then listTorpBody:addEntry(Bodies[BDRef.Lynx].name%_t, mColor.Trinium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Trinium)) then listTorpBody:addEntry(Bodies[BDRef.Panther].name%_t, mColor.Trinium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Xanion)) then listTorpBody:addEntry(Bodies[BDRef.Osprey].name%_t, mColor.Xanion) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Ogonite)) then listTorpBody:addEntry(Bodies[BDRef.Eagle].name%_t, mColor.Ogonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Avorion)) then listTorpBody:addEntry(Bodies[BDRef.Hawk].name%_t, mColor.Avorion) end
+		if materialKnowledge.titanium then listTorpBody:addEntry(Bodies[BDRef.Hammerhead].name%_t, mColor.Titanium) end
+		if materialKnowledge.naonite then listTorpBody:addEntry(Bodies[BDRef.Stingray].name%_t, mColor.Naonite) end
+		if materialKnowledge.naonite then listTorpBody:addEntry(Bodies[BDRef.Ocelot].name%_t, mColor.Naonite) end
+		if materialKnowledge.trinium then listTorpBody:addEntry(Bodies[BDRef.Lynx].name%_t, mColor.Trinium) end
+		if materialKnowledge.trinium then listTorpBody:addEntry(Bodies[BDRef.Panther].name%_t, mColor.Trinium) end
+		if materialKnowledge.xanion then listTorpBody:addEntry(Bodies[BDRef.Osprey].name%_t, mColor.Xanion) end
+		if materialKnowledge.ogonite then listTorpBody:addEntry(Bodies[BDRef.Eagle].name%_t, mColor.Ogonite) end
+		if materialKnowledge.avorion then listTorpBody:addEntry(Bodies[BDRef.Hawk].name%_t, mColor.Avorion) end
 	end
 	if listTorpWarhead then
 		listTorpWarhead:clear()
 		listTorpWarhead:addEntry(Warheads[WHRef.Nuclear].name%_t, mColor.Iron)
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Titanium)) then listTorpWarhead:addEntry(Warheads[WHRef.Neutron].name%_t, mColor.Titanium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Titanium)) then listTorpWarhead:addEntry(Warheads[WHRef.Fusion].name%_t, mColor.Titanium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Naonite)) then listTorpWarhead:addEntry(Warheads[WHRef.Kinetic].name%_t, mColor.Naonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Trinium)) then listTorpWarhead:addEntry(Warheads[WHRef.Plasma].name%_t, mColor.Trinium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Trinium)) then listTorpWarhead:addEntry(Warheads[WHRef.Ion].name%_t, mColor.Trinium) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Xanion)) then listTorpWarhead:addEntry(Warheads[WHRef.Tandem].name%_t, mColor.Xanion) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Ogonite)) then listTorpWarhead:addEntry(Warheads[WHRef.EMP].name%_t, mColor.Ogonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Ogonite)) then listTorpWarhead:addEntry(Warheads[WHRef.Sabot].name%_t, mColor.Ogonite) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Avorion)) then listTorpWarhead:addEntry(Warheads[WHRef.AntiMatter].name%_t, mColor.Avorion) end
+		if materialKnowledge.titanium then listTorpWarhead:addEntry(Warheads[WHRef.Neutron].name%_t, mColor.Titanium) end
+		if materialKnowledge.titanium then listTorpWarhead:addEntry(Warheads[WHRef.Fusion].name%_t, mColor.Titanium) end
+		if materialKnowledge.naonite then listTorpWarhead:addEntry(Warheads[WHRef.Kinetic].name%_t, mColor.Naonite) end
+		if materialKnowledge.trinium then listTorpWarhead:addEntry(Warheads[WHRef.Plasma].name%_t, mColor.Trinium) end
+		if materialKnowledge.trinium then listTorpWarhead:addEntry(Warheads[WHRef.Ion].name%_t, mColor.Trinium) end
+		if materialKnowledge.xanion then listTorpWarhead:addEntry(Warheads[WHRef.Tandem].name%_t, mColor.Xanion) end
+		if materialKnowledge.ogonite then listTorpWarhead:addEntry(Warheads[WHRef.EMP].name%_t, mColor.Ogonite) end
+		if materialKnowledge.ogonite then listTorpWarhead:addEntry(Warheads[WHRef.Sabot].name%_t, mColor.Ogonite) end
+		if materialKnowledge.avorion then listTorpWarhead:addEntry(Warheads[WHRef.AntiMatter].name%_t, mColor.Avorion) end
 	end
 	if listTorpRarity then
 		listTorpRarity:clear()
 		listTorpRarity:addEntry(Rarity(RarityType.Common).name, TorpedoAssembly.getRarityColor(RarityType.Common))
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Naonite)) then listTorpRarity:addEntry(Rarity(RarityType.Uncommon).name, TorpedoAssembly.getRarityColor(RarityType.Uncommon)) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Trinium)) then listTorpRarity:addEntry(Rarity(RarityType.Rare).name, TorpedoAssembly.getRarityColor(RarityType.Rare)) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Xanion)) then listTorpRarity:addEntry(Rarity(RarityType.Exceptional).name, TorpedoAssembly.getRarityColor(RarityType.Exceptional)) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Ogonite)) then listTorpRarity:addEntry(Rarity(RarityType.Exotic).name, TorpedoAssembly.getRarityColor(RarityType.Exotic)) end
-		if KnowledgeUtility.hasKnowledge(player, Material(MaterialType.Avorion)) then listTorpRarity:addEntry(Rarity(RarityType.Legendary).name, TorpedoAssembly.getRarityColor(RarityType.Legendary)) end
+		if materialKnowledge.naonite then listTorpRarity:addEntry(Rarity(RarityType.Uncommon).name, TorpedoAssembly.getRarityColor(RarityType.Uncommon)) end
+		if materialKnowledge.trinium then listTorpRarity:addEntry(Rarity(RarityType.Rare).name, TorpedoAssembly.getRarityColor(RarityType.Rare)) end
+		if materialKnowledge.xanion then listTorpRarity:addEntry(Rarity(RarityType.Exceptional).name, TorpedoAssembly.getRarityColor(RarityType.Exceptional)) end
+		if materialKnowledge.ogonite then listTorpRarity:addEntry(Rarity(RarityType.Exotic).name, TorpedoAssembly.getRarityColor(RarityType.Exotic)) end
+		if materialKnowledge.avorion then listTorpRarity:addEntry(Rarity(RarityType.Legendary).name, TorpedoAssembly.getRarityColor(RarityType.Legendary)) end
 	end
 end
 
@@ -921,8 +961,9 @@ function TorpedoAssembly.updateTorpedoWaitQueue()
 end
 
 function TorpedoAssembly.updateTorpedoProdQueue()
-	timerDelta = Client().unpausedRuntime - timerLast
-	timerLast = Client().unpausedRuntime
+	local runtime = getClientRuntime()
+	timerDelta = runtime - timerLast
+	timerLast = runtime
 	if player and #self.torpProdQueueEXT > 0 then
 		for pLine = 1, #self.torpProdQueueEXT do
 			if self.torpProdQueueEXT[pLine].tStatus == 1 and
@@ -1039,7 +1080,8 @@ function TorpedoAssembly.actionSaveDesign()
 	dataEntry = dataEntry..',["warheadIndex"]='..torpIndexWarhead
 	dataEntry = dataEntry..',["bodyIndex"]='..torpIndexBody
 	dataEntry = dataEntry..'}\n'
-	local fStream = io.input(io.open(filePath, "a"))
+	local fStream = io.open(filePath, "a")
+	if not fStream then return end
 	fStream:write(dataEntry)
 	fStream:close()
 	TorpedoAssembly.commandLoadTorpDesigns()
@@ -1055,9 +1097,11 @@ function TorpedoAssembly.actionDeleteDesign()
 	local tempStrStorage = {}
 	local refLine = listTorpDesigns.selected + 1
 	local fStream = io.open(filePath, "r")
-	for rLine in io.lines(filePath) do table.insert(tempStrStorage, rLine) end
+	if not fStream then return end
+	for rLine in fStream:lines() do table.insert(tempStrStorage, rLine) end
 	fStream:close()
-	fStream = io.output(io.open(filePath, "w"))
+	fStream = io.open(filePath, "w")
+	if not fStream then return end
 	for sLine = 1, #tempStrStorage do
 		if sLine ~= refLine then
 			fStream:write(tempStrStorage[sLine].."\n")
@@ -1201,16 +1245,7 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
 		for pLine = 1, #self.torpProdQueueINT do
 			if self.torpProdQueueINT[pLine].cIdx == craftIdx then
 				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
-				self.torpProdQueueINT[pLine].tName = "N/A"
-				self.torpProdQueueINT[pLine].tRarity = -1
-				self.torpProdQueueINT[pLine].tWarhead = -1
-				self.torpProdQueueINT[pLine].tBody = -1
-				self.torpProdQueueINT[pLine].tCost = {}
-				self.torpProdQueueINT[pLine].pPayerIndex = nil
-				self.torpProdQueueINT[pLine].pPayerIsAlliance = false
-				self.torpProdQueueINT[pLine].tWork = 1
-				self.torpProdQueueINT[pLine].tDone = 0
-				self.torpProdQueueINT[pLine].tStatus = 0
+				resetProductionLine(self.torpProdQueueINT[pLine])
 				refreshExt = true
 			end
 		end
@@ -1234,16 +1269,7 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
 			if self.torpProdQueueINT[pLine].cIdx == craftIdx and
 				self.torpProdQueueINT[pLine].cProdLine == numLine then
 				TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
-				self.torpProdQueueINT[pLine].tName = "N/A"
-				self.torpProdQueueINT[pLine].tRarity = -1
-				self.torpProdQueueINT[pLine].tWarhead = -1
-				self.torpProdQueueINT[pLine].tBody = -1
-				self.torpProdQueueINT[pLine].tCost = {}
-				self.torpProdQueueINT[pLine].pPayerIndex = nil
-				self.torpProdQueueINT[pLine].pPayerIsAlliance = false
-				self.torpProdQueueINT[pLine].tWork = 1
-				self.torpProdQueueINT[pLine].tDone = 0
-				self.torpProdQueueINT[pLine].tStatus = 0
+				resetProductionLine(self.torpProdQueueINT[pLine])
 				refreshExt = true
 			end
 		end
@@ -1554,7 +1580,11 @@ function TorpedoAssembly.commandLoadTorpDesigns()
 		return
 	end
 	local fStream = io.open(filePath, "r")
-	for fLine in io.lines(filePath) do
+	if not fStream then
+		TorpedoAssembly.updateTorpedoDesigns()
+		return
+	end
+	for fLine in fStream:lines() do
 		if string.len(fLine) > 20 and string.sub(fLine,1,10) == "{[\"name\"]=" then
 			local tData = TorpedoAssembly.parseStoredDesign(fLine)
 			if tData then table.insert(storedDesigns, tData) end
