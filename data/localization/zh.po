@@ -1,200 +1,311 @@
+# ========== /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua ==========
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Torpedo Assembly"
+msgstr "鱼雷生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Torpedo Assembly"
+msgstr "鱼雷生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO ASSEMBLY SETTINGS"
 msgstr "鱼雷装配设置"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Body"
 msgstr "鱼雷形态"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Warhead"
 msgstr "鱼雷战斗部"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Rarity"
 msgstr "鱼雷稀有度"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "DESIGN"
 msgstr "设计方案"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "SAVE"
 msgstr "保存"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "RESET"
 msgstr "重置"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Generates torpedo design using the selected options. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr "使用选定的选项生成鱼雷设计。 如果您的船缺少装配区或鱼雷储存块，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Saves current torpedo design to disk. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr "将当前的鱼雷设计保存到磁盘。 如果没有生成鱼雷设计或者您的船缺少装配区或鱼雷存储块，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Resets torpedo design and all stats shown on the interface. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr "重置鱼雷设计和界面上显示的所有统计数据。 如果您的船缺少装配区或鱼雷储存块，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "SAVED TORPEDO DESIGNS"
 msgstr "保存的鱼雷设计"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "DELETE"
 msgstr "删除"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "RELOAD"
 msgstr "重载"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Deletes saved design you've selected. Will be disabled, if you have no more saved designs."
 msgstr "删除您选择的已保存设计。如果您没有更多已保存设计，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Reloads saved designs from the disk. Suitable if you add them manually mid-play."
 msgstr "从磁盘重新加载已保存设计。如果您在游戏中手动添加它们，则适用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO CAPACITY OVERVIEW"
 msgstr "鱼雷容量预览"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #01:"
 msgstr "发射架 #01"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #02:"
 msgstr "发射架 #02"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #03:"
 msgstr "发射架 #03"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #04:"
 msgstr "发射架 #04"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #05:"
 msgstr "发射架 #05"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #06:"
 msgstr "发射架 #06"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #07:"
 msgstr "发射架 #07"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #08:"
 msgstr "发射架 #08"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #09:"
 msgstr "发射架 #09"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #10:"
 msgstr "发射架 #10"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Storage:"
 msgstr "鱼雷存储仓:"
 
-msgid "TORPEDO ASSEMBLY STATS"
-msgstr "鱼雷装配概况"
-
-msgid "Name:"
-msgstr "名称:"
-
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Rarity/Grade:"
 msgstr "稀有度/等级:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Damage Type:"
 msgstr "伤害类型:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Hull Damage:"
 msgstr "船体伤害:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shield Damage:"
 msgstr "护盾伤害:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Velocity Factor:"
 msgstr "速度系数:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Size:"
 msgstr "大小:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Tech Level:"
 msgstr "科技等级:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Durability:"
 msgstr "耐久度:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Acceleration:"
 msgstr "加速性能:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Maneuverability:"
 msgstr "机动性能:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Max. Velocity:"
 msgstr "最大速度:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Max. Range:"
 msgstr "最大射程:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Penetrates Shield:"
 msgstr "护盾穿透:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Deactivates Shield:"
 msgstr "护盾停用:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shield/Hull Damage:"
 msgstr "护盾/船体伤害:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Drains Energy:"
 msgstr "能量汲取:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Energy Usage:"
 msgstr "能量使用:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO ASSEMBLY CONTROL"
 msgstr "鱼雷生产控制"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "ADD"
 msgstr "增加"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "REMOVE"
 msgstr "移除"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "STOP"
 msgstr "停止"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "REPEAT"
 msgstr "重复"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr "将选定数量的鱼雷添加到生产队列中。如果没有生成的鱼雷设计，或者您的船缺少组件或鱼雷存储块，将禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Remove chosen torpedo production request from queue. Will be disabled, if there is nothing in queue."
 msgstr "从队列中删除选定的鱼雷生产请求。如果队列中没有任何内容，则将禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Completely stop all production, clean up production queue and refund materials for all torpedoes in progress. Will be disabled, if nothing is produced."
 msgstr "完全停止所有生产，清理生产队列并为所有正在进行的鱼雷退还材料。 如果什么都没产生，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr "自动继续生产选定的鱼雷设计。 如果没有生成鱼雷设计或者您的船缺少装配或鱼雷存储块，将被禁用。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Speed:"
 msgstr "生产速度:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Lines:"
 msgstr "生产线:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Required Effort:"
 msgstr "需求生产力:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Time:"
 msgstr "生产时间:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Designed torpedoes amount to queue for production. Limits depend on available materials. Up to 100 torpedoes per queue. Torpedoes that lack storage will halt production queue, unless stored or refunded."
 msgstr "设计的鱼雷相当于排队生产。 限制取决于可用的材料。 每个队列最多 100 枚鱼雷。 缺少存储的鱼雷将停止生产队列，除非存储或退款。"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Iron Cost:"
 msgstr "铁金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Titan. Cost:"
 msgstr "钛金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Trin. Cost:"
 msgstr "淬尼金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Ogon. Cost:"
 msgstr "欧格金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Naon. Cost:"
 msgstr "纳奥金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Xan. Cost:"
 msgstr "瑕恩金属消耗:"
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Avor. Cost:"
 msgstr "艾沃里翁消耗:"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Inactive"
+msgstr "非活跃"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. I"
+msgstr "Mk. I"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. II"
+msgstr "Mk. II"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. III"
+msgstr "Mk. III"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. V"
+msgstr "Mk. V"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. VII"
+msgstr "Mk. VII"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. X"
+msgstr "Mk. X"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Prototype"
+msgstr "原型"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Refund torpedo from this production line."
+msgstr "从此生产线退还鱼雷。"
+
+
+# ========== old ==========
+# msgid "TORPEDO ASSEMBLY STATS"
+# msgstr "鱼雷装配概况"
+
+

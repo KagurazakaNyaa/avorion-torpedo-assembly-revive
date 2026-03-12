@@ -1,200 +1,306 @@
+# ========== /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua ==========
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Torpedo Assembly"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Torpedo Assembly"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO ASSEMBLY SETTINGS"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Body"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Warhead"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Rarity"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "DESIGN"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "SAVE"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "RESET"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Generates torpedo design using the selected options. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Saves current torpedo design to disk. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Resets torpedo design and all stats shown on the interface. Will be disabled, if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "SAVED TORPEDO DESIGNS"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "DELETE"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "RELOAD"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Deletes saved design you've selected. Will be disabled, if you have no more saved designs."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Reloads saved designs from the disk. Suitable if you add them manually mid-play."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO CAPACITY OVERVIEW"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #01:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #02:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #03:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #04:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #05:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #06:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #07:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #08:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #09:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shaft #10:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Storage:"
 msgstr ""
 
-msgid "TORPEDO ASSEMBLY STATS"
-msgstr ""
-
-msgid "Name:"
-msgstr ""
-
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Rarity/Grade:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Damage Type:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Hull Damage:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shield Damage:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Velocity Factor:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Size:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Tech Level:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Durability:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Acceleration:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Maneuverability:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Max. Velocity:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Max. Range:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Penetrates Shield:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Deactivates Shield:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Shield/Hull Damage:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Drains Energy:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Energy Usage:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "TORPEDO ASSEMBLY CONTROL"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "ADD"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "REMOVE"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "STOP"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "REPEAT"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Remove chosen torpedo production request from queue. Will be disabled, if there is nothing in queue."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Completely stop all production, clean up production queue and refund materials for all torpedoes in progress. Will be disabled, if nothing is produced."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Speed:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Lines:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Required Effort:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Time:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Designed torpedoes amount to queue for production. Limits depend on available materials. Up to 100 torpedoes per queue. Torpedoes that lack storage will halt production queue, unless stored or refunded."
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Iron Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Titan. Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Trin. Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Ogon. Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Naon. Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Xan. Cost:"
 msgstr ""
 
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Avor. Cost:"
 msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Inactive"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. I"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. II"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. III"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. V"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. VII"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Mk. X"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Prototype"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Refund torpedo from this production line."
+msgstr ""
+
+
