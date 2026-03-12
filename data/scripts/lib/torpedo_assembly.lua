@@ -95,6 +95,7 @@ local debugPrint = true
 local filePath = "moddata/torpedo_assembly_designs.txt"
 local storedDesigns = {}
 local diskPermissions = true
+local nextQueueId = 0
 local timerLast = 0
 local timerDelta = 0
 local countLogic = 60
@@ -231,7 +232,8 @@ function TorpedoAssembly.secure()
 		dProdQueueEXT = self.torpProdQueueEXT,
 		dWaitQueueINT = self.torpWaitQueueINT,
 		dProdQueueINT = self.torpProdQueueINT,
-		dProdShipsINT = self.torpProdShipsINT
+		dProdShipsINT = self.torpProdShipsINT,
+		dNextQueueId = nextQueueId
 	}
 end
 
@@ -248,6 +250,7 @@ function TorpedoAssembly.restore(data)
 		self.torpWaitQueueINT = data.dWaitQueueINT or {}
 		self.torpProdQueueINT = data.dProdQueueINT or {}
 		self.torpProdShipsINT = data.dProdShipsINT or {}
+		nextQueueId = data.dNextQueueId or 0
 	end
 end
 
@@ -1878,12 +1881,8 @@ function TorpedoAssembly.getTableSize(t)
 end
 
 function TorpedoAssembly.genNewId()
-	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 9)))
-	local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-	return string.gsub(template, '[xy]', function (c)
-		local v = (c == 'x') and math.random(0, 0xf) or math.random(8, 0xb)
-		return string.format('%x', v)
-	end)
+	nextQueueId = nextQueueId + 1
+	return nextQueueId
 end
 
 function TorpedoAssembly.printSoMuch(text)
