@@ -116,6 +116,10 @@ msgid "Torpedo Storage:"
 msgstr ""
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "TORPEDO ASSEMBLY STATS"
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Rarity/Grade:"
 msgstr ""
 

@@ -116,6 +116,10 @@ msgid "Torpedo Storage:"
 msgstr "鱼雷存储仓:"
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "TORPEDO ASSEMBLY STATS"
+msgstr "鱼雷生产统计"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Rarity/Grade:"
 msgstr "稀有度/等级:"
 
@@ -302,10 +306,5 @@ msgstr "原型"
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Refund torpedo from this production line."
 msgstr "从此生产线退还鱼雷。"
-
-
-# ========== old ==========
-# msgid "TORPEDO ASSEMBLY STATS"
-# msgstr "鱼雷装配概况"
 
 

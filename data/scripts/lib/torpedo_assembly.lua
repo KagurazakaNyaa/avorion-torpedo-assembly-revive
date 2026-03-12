@@ -371,7 +371,7 @@ end
 
 function TorpedoAssembly.initTorpCraftStats(tab, section)
 	TorpedoAssembly.customFrame(tab, section)
-	TorpedoAssembly.customLabel(tab, section, "TORPEDO ASSEMBLY STATS")
+	TorpedoAssembly.customLabel(tab, section, "TORPEDO ASSEMBLY STATS"%_t)
 	torpStats.tName = TorpedoAssembly.customTextRt(tab, TorpedoAssembly.customText(tab, section, 15, 24, 50, 20, "Name:"%_t, 12).localRect, 300, 20, "", 12, true)
 	torpStats.tRarity = TorpedoAssembly.customTextRt(tab, TorpedoAssembly.customText(tab, section, 15, 46, 105, 20, "Rarity/Grade:"%_t, 12).localRect, 80, 20, "", 12, true)
 	torpStats.tDamageType = TorpedoAssembly.customTextRt(tab, TorpedoAssembly.customText(tab, section, 15, 68, 105, 20, "Damage Type:"%_t, 12).localRect, 80, 20, "", 12, true)
