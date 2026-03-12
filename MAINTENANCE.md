@@ -11,7 +11,7 @@
 
 ### 1. Shipped helper modules loaded with `include(...)`
 
-These helpers exist in Avorion's shipped Lua sources, but their functions/tables are not indexed in the HTML API docs.
+These helpers exist in Avorion's shipped Lua sources, but the helper modules themselves are not exposed as standalone HTML API pages. Some helper-origin globals may still appear individually in `Functions.html`, so the main gap here is module-level discoverability and helper-specific documentation.
 
 | Mod usage | Where used in this repo | Shipped source of truth | Notes |
 | --- | --- | --- | --- |
@@ -77,7 +77,7 @@ These helpers exist in Avorion's shipped Lua sources, but their functions/tables
 #### `TorpedoGenerator():generate(...)`
 
 - Mod dependency: `data/scripts/lib/torpedo_assembly.lua:1528`
-- Vanilla implementation: `.../data/scripts/lib/torpedogenerator.lua:101-175`
+- Vanilla implementation: `.../data/scripts/lib/torpedogenerator.lua:101-176`
 - Why it matters: torpedo preview generation and the produced torpedo template both come from this helper. Any generator output change can affect UI stats, costs, and storage behavior.
 
 #### `Balancing.GetTechLevel(x, y)`
