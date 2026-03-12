@@ -13,6 +13,7 @@ include("callable")
 include("damagetypeutility")
 
 local self = TorpedoAssembly
+local Balancing = include("galaxy")
 local TorpedoUtility = include("torpedoutility")
 local TorpedoGenerator = include("torpedogenerator")
 local KnowledgeUtility = include("buildingknowledgeutility")
@@ -1488,8 +1489,17 @@ end
 callable(TorpedoAssembly, "commandAddStoreTorpedo")
 
 function TorpedoAssembly.commandGetTechLevel(entityIdx)
+	local sector = Sector()
+	if sector then
+		local x, y = sector:getCoordinates()
+		if x ~= nil and y ~= nil then
+			return Balancing.GetTechLevel(x, y)
+		end
+	end
+
 	local refTechLevel = 1
 	local refEntity = Entity(entityIdx)
+	if not refEntity or not valid(refEntity) then return refTechLevel end
 	local shipTurrets = {refEntity:getTurrets()}
 	if shipTurrets and TorpedoAssembly.getTableSize(shipTurrets) > 0 then
 		for _, turret in pairs(shipTurrets) do
@@ -1502,10 +1512,19 @@ function TorpedoAssembly.commandGetTechLevel(entityIdx)
 end
 
 function TorpedoAssembly.commandGetTorpDesign(tRarityIndex, tWarheadIndex, tBodyIndex, tTechLevel)
-	local refDistFromTech = lerp(tTechLevel, 1, 52, 500, 0)
-	local refPosFromDist = math.sqrt(math.pow(refDistFromTech, 2) / 2)
+	local genX, genY
+	local sector = Sector()
+	if sector then
+		genX, genY = sector:getCoordinates()
+	end
+	if genX == nil or genY == nil then
+		local refDistFromTech = lerp(tTechLevel, 1, 52, 500, 0)
+		local refPosFromDist = math.sqrt(math.pow(refDistFromTech, 2) / 2)
+		genX = refPosFromDist
+		genY = refPosFromDist
+	end
 	local tRarity, tWarhead, tBody = TorpedoAssembly.getEntryFromIndex(tRarityIndex, tWarheadIndex, tBodyIndex)
-	local tDesignData = TorpedoGenerator():generate(refPosFromDist, refPosFromDist, nil, Rarity(tRarity), Warheads[tWarhead].type, Bodies[tBody].type)
+	local tDesignData = TorpedoGenerator():generate(genX, genY, nil, Rarity(tRarity), Warheads[tWarhead].type, Bodies[tBody].type)
 	tDesignData.name = "${speed}-Class ${warhead} Torpedo"%_t % {speed = tDesignData.bodyClass%_t, warhead = tDesignData.warheadClass%_t} .. " " .. TorpedoAssembly.getMarkFromRarity(tDesignData.rarity.value)
 	return tDesignData
 end
