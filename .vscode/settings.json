@@ -1,0 +1,11 @@
+{
+  "Lua.codeLens.enable": true,
+  "Lua.hint.enable": true,
+  "Lua.hint.awaitPropagate": true,
+  "Lua.workspace.library": [
+    "~/.local/share/Steam/steamapps/common/Avorion/data"
+  ],
+  "Lua.runtime.special": {
+    "include": "require"
+  }
+}
