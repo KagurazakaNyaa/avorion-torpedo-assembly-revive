@@ -1457,7 +1457,7 @@ function TorpedoAssembly.commandCleanShipList()
         for iShip = #self.torpProdShipsINT, 1, -1 do
             if self.torpProdShipsINT[iShip] and self.torpProdShipsINT[iShip].cIdx then
                 local refShip = Entity(self.torpProdShipsINT[iShip].cIdx)
-                if not refShip then
+                if refShip and not valid(refShip) then
                     for iQueue = #self.torpWaitQueueINT, 1, -1 do
                         if self.torpWaitQueueINT[iQueue] and self.torpWaitQueueINT[iQueue].cIdx == self.torpProdShipsINT[iShip].cIdx then
                             if not self.torpWaitQueueINT[iQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[iQueue].tCost, self.torpWaitQueueINT[iQueue].tAmt, self.torpWaitQueueINT[iQueue]) end
