@@ -69,27 +69,35 @@ local asmMatLines = {
     {name = "Avorion",  lines = 5},
 }
 local prodCostBodies = {
-    {type = BDRef.Orca,       eff = 30,  fe = 60, ti = 0,  na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Hammerhead, eff = 45,  fe = 30, ti = 60, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Stingray,   eff = 60,  fe = 60, ti = 30, na = 30, tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Ocelot,     eff = 50,  fe = 10, ti = 70, na = 20, tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Lynx,       eff = 70,  fe = 10, ti = 70, na = 20, tr = 40, xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Panther,    eff = 90,  fe = 20, ti = 60, na = 30, tr = 70, xa = 0,  og = 0,  av = 0},
-    {type = BDRef.Osprey,     eff = 80,  fe = 20, ti = 50, na = 20, tr = 30, xa = 40, og = 0,  av = 0},
-    {type = BDRef.Eagle,      eff = 100, fe = 20, ti = 60, na = 10, tr = 30, xa = 20, og = 50, av = 0},
-    {type = BDRef.Hawk,       eff = 120, fe = 10, ti = 60, na = 20, tr = 60, xa = 20, og = 30, av = 40},
+    {type = BDRef.Orca,       mat = MaterialType.Iron,     eff = 30,  fe = 60, ti = 0,  na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Hammerhead, mat = MaterialType.Titanium, eff = 45,  fe = 30, ti = 60, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Stingray,   mat = MaterialType.Naonite,  eff = 60,  fe = 60, ti = 30, na = 30, tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Ocelot,     mat = MaterialType.Naonite,  eff = 50,  fe = 10, ti = 70, na = 20, tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Lynx,       mat = MaterialType.Trinium,  eff = 70,  fe = 10, ti = 70, na = 20, tr = 40, xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Panther,    mat = MaterialType.Trinium,  eff = 90,  fe = 20, ti = 60, na = 30, tr = 70, xa = 0,  og = 0,  av = 0},
+    {type = BDRef.Osprey,     mat = MaterialType.Xanion,   eff = 80,  fe = 20, ti = 50, na = 20, tr = 30, xa = 40, og = 0,  av = 0},
+    {type = BDRef.Eagle,      mat = MaterialType.Ogonite,  eff = 100, fe = 20, ti = 60, na = 10, tr = 30, xa = 20, og = 50, av = 0},
+    {type = BDRef.Hawk,       mat = MaterialType.Avorion,  eff = 120, fe = 10, ti = 60, na = 20, tr = 60, xa = 20, og = 30, av = 40},
 }
 local prodCostWarheads = {
-    {type = WHRef.Nuclear,    eff = 20,  fe = 40, ti = 0,  na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Neutron,    eff = 35,  fe = 30, ti = 40, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Fusion,     eff = 35,  fe = 20, ti = 50, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Kinetic,    eff = 50,  fe = 20, ti = 35, na = 45, tr = 0,  xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Plasma,     eff = 70,  fe = 30, ti = 40, na = 20, tr = 50, xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Ion,        eff = 80,  fe = 40, ti = 20, na = 60, tr = 40, xa = 0,  og = 0,  av = 0},
-    {type = WHRef.Tandem,     eff = 120, fe = 20, ti = 40, na = 50, tr = 50, xa = 80, og = 0,  av = 0},
-    {type = WHRef.EMP,        eff = 120, fe = 80, ti = 20, na = 40, tr = 20, xa = 30, og = 50, av = 0},
-    {type = WHRef.Sabot,      eff = 150, fe = 20, ti = 70, na = 20, tr = 60, xa = 40, og = 90, av = 0},
-    {type = WHRef.AntiMatter, eff = 200, fe = 10, ti = 60, na = 60, tr = 70, xa = 60, og = 60, av = 80},
+    {type = WHRef.Nuclear,    mat = MaterialType.Iron,     eff = 20,  fe = 40, ti = 0,  na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Neutron,    mat = MaterialType.Titanium, eff = 35,  fe = 30, ti = 40, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Fusion,     mat = MaterialType.Titanium, eff = 35,  fe = 20, ti = 50, na = 0,  tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Kinetic,    mat = MaterialType.Naonite,  eff = 50,  fe = 20, ti = 35, na = 45, tr = 0,  xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Plasma,     mat = MaterialType.Trinium,  eff = 70,  fe = 30, ti = 40, na = 20, tr = 50, xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Ion,        mat = MaterialType.Trinium,  eff = 80,  fe = 40, ti = 20, na = 60, tr = 40, xa = 0,  og = 0,  av = 0},
+    {type = WHRef.Tandem,     mat = MaterialType.Xanion,   eff = 120, fe = 20, ti = 40, na = 50, tr = 50, xa = 80, og = 0,  av = 0},
+    {type = WHRef.EMP,        mat = MaterialType.Ogonite,  eff = 120, fe = 80, ti = 20, na = 40, tr = 20, xa = 30, og = 50, av = 0},
+    {type = WHRef.Sabot,      mat = MaterialType.Ogonite,  eff = 150, fe = 20, ti = 70, na = 20, tr = 60, xa = 40, og = 90, av = 0},
+    {type = WHRef.AntiMatter, mat = MaterialType.Avorion,  eff = 200, fe = 10, ti = 60, na = 60, tr = 70, xa = 60, og = 60, av = 80},
+}
+local rarityCatalog = {
+    [0] = {rarity = RarityType.Common,      mat = MaterialType.Iron},
+    [1] = {rarity = RarityType.Uncommon,    mat = MaterialType.Naonite},
+    [2] = {rarity = RarityType.Rare,        mat = MaterialType.Trinium},
+    [3] = {rarity = RarityType.Exceptional, mat = MaterialType.Xanion},
+    [4] = {rarity = RarityType.Exotic,      mat = MaterialType.Ogonite},
+    [5] = {rarity = RarityType.Legendary,   mat = MaterialType.Avorion},
 }
 
 local debugPrint = true
@@ -475,13 +483,15 @@ function TorpedoAssembly.processStoreLogic()
                     self.torpProdQueueINT[pLine].tWarhead,
                     self.torpProdQueueINT[pLine].tBody,
                     self.torpProdQueueINT[pLine].cTech)
-                local newStatus = TorpedoAssembly.commandSafeSendToStorage(newTorp, self.torpProdQueueINT[pLine].cIdx)
-                if newStatus == 4 then
-                    self.torpProdQueueINT[pLine].tStatus = 2
-                    emergencyCleanNeeded = true
-                else self.torpProdQueueINT[pLine].tStatus = newStatus end
-                --TorpedoAssembly.dPrint("processStoreLogic() -> Deposit Status for Line #"..pLine..": "..newStatus)
-                somethingHasChanged = true
+                if newTorp then
+                    local newStatus = TorpedoAssembly.commandSafeSendToStorage(newTorp, self.torpProdQueueINT[pLine].cIdx)
+                    if newStatus == 4 then
+                        self.torpProdQueueINT[pLine].tStatus = 2
+                        emergencyCleanNeeded = true
+                    else self.torpProdQueueINT[pLine].tStatus = newStatus end
+                    --TorpedoAssembly.dPrint("processStoreLogic() -> Deposit Status for Line #"..pLine..": "..newStatus)
+                    somethingHasChanged = true
+                end
             end
         end
     end
@@ -518,6 +528,27 @@ end
 function TorpedoAssembly.getOwnerPlayer()
     if onServer() and callingPlayer then return Player(callingPlayer) end
     return Player()
+end
+
+function TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx)
+    if rarityIdx == nil or warheadIdx == nil or bodyIdx == nil then return false end
+
+    local rarity, warhead, body = TorpedoAssembly.getEntryFromIndex(rarityIdx, warheadIdx, bodyIdx)
+    local rarityMat, warheadMat, bodyMat = TorpedoAssembly.getMaterialFromIndex(rarityIdx, warheadIdx, bodyIdx)
+    return rarity ~= nil and warhead ~= nil and body ~= nil and
+        rarityMat ~= nil and warheadMat ~= nil and bodyMat ~= nil
+end
+
+function TorpedoAssembly.isPlayerCurrentCraft(refPlayer, craftIdx)
+    if not refPlayer or not refPlayer.craftIndex or not craftIdx then return false end
+    return refPlayer.craftIndex.value == craftIdx
+end
+
+function TorpedoAssembly.getCoordinatesFromTechLevel(techLevel)
+    local refTechLevel = math.max(1, math.min(52, techLevel or 1))
+    local refDistFromTech = lerp(refTechLevel, 1, 52, 500, 0)
+    local refPosFromDist = math.sqrt((refDistFromTech ^ 2) / 2)
+    return refPosFromDist, refPosFromDist
 end
 
 function TorpedoAssembly.getClientTargetPlayer()
@@ -747,14 +778,18 @@ function TorpedoAssembly.checkResources(pResource, tCost)
     if pResource.infinite then return 100 end
     local tAmount = 100
     for mType = 1, 7 do
-        local pLimit = math.min(math.floor(pResource[mType] / tCost[mType]), 100)
-        if pLimit < tAmount then tAmount = pLimit end
+        if tCost[mType] and tCost[mType] > 0 then
+            local pLimit = math.min(math.floor((pResource[mType] or 0) / tCost[mType]), 100)
+            if pLimit < tAmount then tAmount = pLimit end
+        end
     end
     return tAmount
 end
 
 function TorpedoAssembly.checkKnowledge(idxRarity, idxWarhead, idxBody)
+    if not TorpedoAssembly.isValidDesignIndex(idxRarity, idxWarhead, idxBody) then return false end
     local matPlayer = TorpedoAssembly.getOwnerPlayer()
+    if not matPlayer then return false end
     local matRarity, matWarhead, matBody = TorpedoAssembly.getMaterialFromIndex(idxRarity, idxWarhead, idxBody)
     local matRarityKnw = KnowledgeUtility.hasKnowledge(matPlayer, Material(matRarity))
     local matWarheadKnw = KnowledgeUtility.hasKnowledge(matPlayer, Material(matWarhead))
@@ -764,11 +799,13 @@ function TorpedoAssembly.checkKnowledge(idxRarity, idxWarhead, idxBody)
 end
 
 function TorpedoAssembly.calculateTorpedoCost(idxRarity, idxWarhead, idxBody, tTech)
+    if not TorpedoAssembly.isValidDesignIndex(idxRarity, idxWarhead, idxBody) then return nil end
     local rarityVal = Rarity(idxRarity).value
     local warheadCost = prodCostWarheads[idxWarhead + 1]
     local bodyCost = prodCostBodies[idxBody + 1]
-    local tBiasEff = lerp(tTech, 1, 52, 0, 200)
-    local tBiasCost = lerp(tTech, 1, 52, 0, 300)
+    local refTech = tTech or 1
+    local tBiasEff = lerp(refTech, 1, 52, 0, 200)
+    local tBiasCost = lerp(refTech, 1, 52, 0, 300)
     local costEff = round((100 * warheadCost.eff * bodyCost.eff * (1 + rarityVal) * (1 + tBiasEff / 100)) / 60)
     local costFe = round((warheadCost.fe + bodyCost.fe) * (1 + rarityVal * 0.35) * (1 + tBiasCost / 100))
     local costTi = round((warheadCost.ti + bodyCost.ti) * (1 + rarityVal * 0.35) * (1 + tBiasCost / 100))
@@ -1063,6 +1100,8 @@ end
 callable(TorpedoAssembly, "actionValidateDesign")
 
 function TorpedoAssembly.actionResetDesign()
+    if not onClient() then return end
+
     TorpedoAssembly.resetTorpedoStats()
     TorpedoAssembly.resetFactoryStats()
 end
@@ -1075,7 +1114,8 @@ function TorpedoAssembly.actionSaveDesign()
         print("Warning! Torpedo Assembler is missing disk read/write permissions!")
         return
     end
-    local dataEntry ='{["name"]="'..torpDesign.name..'"'
+    local safeName = (torpDesign.name or ""):gsub('["\r\n]', '')
+    local dataEntry ='{["name"]="'..safeName..'"'
     dataEntry = dataEntry..',["rarityIndex"]='..torpIndexRarity
     dataEntry = dataEntry..',["warheadIndex"]='..torpIndexWarhead
     dataEntry = dataEntry..',["bodyIndex"]='..torpIndexBody
@@ -1113,19 +1153,21 @@ end
 callable(TorpedoAssembly, "actionDeleteDesign")
 
 function TorpedoAssembly.actionReloadDesigns()
+    if not onClient() then return end
+
     TorpedoAssembly.commandLoadTorpDesigns()
 end
 callable(TorpedoAssembly, "actionReloadDesigns")
 
 function TorpedoAssembly.actionLoadSelected()
+    if not onClient() then return end
+
     local refLine = listTorpDesigns.selected + 1
     if storedDesigns[refLine] then
         torpIndexRarity = storedDesigns[refLine].rarityIndex
         torpIndexWarhead = storedDesigns[refLine].warheadIndex
         torpIndexBody = storedDesigns[refLine].bodyIndex
-        if onClient() then
-            invokeServerFunction("commandGenerateDesign", torpIndexRarity, torpIndexWarhead, torpIndexBody)
-        end
+        invokeServerFunction("commandGenerateDesign", torpIndexRarity, torpIndexWarhead, torpIndexBody)
     end
 end
 callable(TorpedoAssembly, "actionLoadSelected")
@@ -1159,6 +1201,8 @@ end
 callable(TorpedoAssembly, "actionProdRepeat")
 
 function TorpedoAssembly.actionQueueSelect()
+    if not onClient() then return end
+
     if torpFactory.pProdQueue.selectedValue then btnAssemblerRemove.active = true
     else btnAssemblerRemove.active = false end
 end
@@ -1229,6 +1273,10 @@ function TorpedoAssembly.reloadExtWaitTable(intWait)
 end
 
 function TorpedoAssembly.commandStopFactory(craftIdx)
+    craftIdx = tonumber(craftIdx)
+    local actorPlayer = TorpedoAssembly.getOwnerPlayer()
+    if not TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, craftIdx) then return end
+
     local refreshExt = false
     if #self.torpWaitQueueINT > 0 then
         for pQueue = #self.torpWaitQueueINT, 1, -1 do
@@ -1263,6 +1311,11 @@ end
 callable(TorpedoAssembly, "commandStopFactory")
 
 function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
+    craftIdx = tonumber(craftIdx)
+    numLine = math.floor(tonumber(numLine) or 0)
+    local actorPlayer = TorpedoAssembly.getOwnerPlayer()
+    if not TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, craftIdx) or numLine < 1 then return end
+
     local refreshExt = false
     if #self.torpProdQueueINT > 0 then
         for pLine = 1, #self.torpProdQueueINT do
@@ -1283,10 +1336,15 @@ end
 callable(TorpedoAssembly, "commandRemoveFromLine")
 
 function TorpedoAssembly.commandRemoveFromQueue(entryId)
+    entryId = tonumber(entryId)
+    local actorPlayer = TorpedoAssembly.getOwnerPlayer()
+    if not actorPlayer or not entryId then return end
+
     local refreshExt = false
     if #self.torpWaitQueueINT > 0 then
         for pQueue = 1, #self.torpWaitQueueINT do
-            if self.torpWaitQueueINT[pQueue].tId == entryId then
+            if self.torpWaitQueueINT[pQueue].tId == entryId and
+                TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, self.torpWaitQueueINT[pQueue].cIdx) then
                 if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt, self.torpWaitQueueINT[pQueue]) end
                 table.remove(self.torpWaitQueueINT, pQueue)
                 refreshExt = true
@@ -1303,37 +1361,53 @@ end
 callable(TorpedoAssembly, "commandRemoveFromQueue")
 
 function TorpedoAssembly.commandAddToQueue(rarityIdx, warheadIdx, bodyIdx, craftIdx, tAmount, setRepeat)
-    if torpDesign then
-        local actorPlayer = TorpedoAssembly.getOwnerPlayer()
-        local payerInfo = TorpedoAssembly.getPayerInfo(actorPlayer)
-        TorpedoAssembly.fetchPlayerData()
-        local newTorpId = TorpedoAssembly.genNewId()
-        torpCost = TorpedoAssembly.calculateTorpedoCost(rarityIdx, warheadIdx, bodyIdx, torpDesign.tech)
-        tAmount = math.min(TorpedoAssembly.checkResources(playerResource, torpCost), tAmount)
-        local meetsReqs = TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx)
-        if meetsReqs and tAmount > 0 then
-            if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
-            table.insert(self.torpWaitQueueINT,{cIdx = craftIdx, tId = newTorpId,
-            tName = torpDesign.name, tRarity = rarityIdx, tWarhead = warheadIdx,
-            tBody = bodyIdx, tAmt = tAmount, tCost = torpCost, tRepeat = setRepeat,
-            pPayerIndex = payerInfo.pPayerIndex, pPayerIsAlliance = payerInfo.pPayerIsAlliance})
-            if onServer() then
-                local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
-                self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-                if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
-            end
-        end
+    rarityIdx = math.floor(tonumber(rarityIdx) or -1)
+    warheadIdx = math.floor(tonumber(warheadIdx) or -1)
+    bodyIdx = math.floor(tonumber(bodyIdx) or -1)
+    craftIdx = tonumber(craftIdx)
+    tAmount = math.floor(tonumber(tAmount) or 0)
+    setRepeat = setRepeat == true
+
+    local actorPlayer = TorpedoAssembly.getOwnerPlayer()
+    if not TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx) or
+        not TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, craftIdx) or tAmount < 1 then return end
+
+    local shipTechLevel = TorpedoAssembly.commandGetTechLevel(actorPlayer.craftIndex)
+    local payerInfo = TorpedoAssembly.getPayerInfo(actorPlayer)
+    player = actorPlayer
+    TorpedoAssembly.fetchPlayerData()
+    torpCost = TorpedoAssembly.calculateTorpedoCost(rarityIdx, warheadIdx, bodyIdx, shipTechLevel)
+    if not torpCost then return end
+    tAmount = math.min(TorpedoAssembly.checkResources(playerResource, torpCost), tAmount)
+    if not TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx) or tAmount < 1 then return end
+
+    if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
+    table.insert(self.torpWaitQueueINT, {
+        cIdx = craftIdx, tId = TorpedoAssembly.genNewId(),
+        tName = TorpedoAssembly.buildTorpName(rarityIdx, warheadIdx, bodyIdx),
+        tRarity = rarityIdx, tWarhead = warheadIdx, tBody = bodyIdx,
+        tAmt = tAmount, tCost = torpCost, tRepeat = setRepeat,
+        pPayerIndex = payerInfo.pPayerIndex, pPayerIsAlliance = payerInfo.pPayerIsAlliance,
+    })
+    if onServer() then
+        local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
+        self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
+        if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
     end
 end
 callable(TorpedoAssembly, "commandAddToQueue")
 
 function TorpedoAssembly.commandPushWaitData(serverData)
+    if not onClient() then return end
+
     self.torpWaitQueueEXT = serverData
     TorpedoAssembly.updateTorpedoWaitQueue()
 end
 callable(TorpedoAssembly, "commandPushWaitData")
 
 function TorpedoAssembly.commandPushProdData(serverData)
+    if not onClient() then return end
+
     self.torpProdQueueEXT = serverData
     TorpedoAssembly.updateTorpedoProdQueue()
 end
@@ -1350,6 +1424,8 @@ end
 callable(TorpedoAssembly, "commandSendClientData")
 
 function TorpedoAssembly.commandLoadClientData(waitQueue, prodQueue)
+    if not onClient() then return end
+
     self.torpWaitQueueEXT = waitQueue
     self.torpProdQueueEXT = prodQueue
     TorpedoAssembly.updateTorpedoWaitQueue()
@@ -1399,9 +1475,11 @@ end
 
 function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
     local refEntity = Entity(entityIdx)
+    if not refEntity or not valid(refEntity) then return end
+
     local refShipPlan = Plan(refEntity)
     local refTech = techLevel or TorpedoAssembly.commandGetTechLevel(entityIdx)
-    if refEntity and refShipPlan then
+    if refShipPlan then
         local sProdLines, sProdCap = TorpedoAssembly.fetchProdLines(refShipPlan)
         if sProdLines > 0 then
             for pLine = 1, sProdLines do
@@ -1433,6 +1511,9 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
                 if self.torpProdQueueINT[pDel] then
                     if self.torpProdQueueINT[pDel].cIdx == refEntity.index.value and
                         self.torpProdQueueINT[pDel].cProdLine > sProdLines then
+                        if self.torpProdQueueINT[pDel].tStatus ~= 0 then
+                            TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pDel].tCost, 1, self.torpProdQueueINT[pDel])
+                        end
                         table.remove(self.torpProdQueueINT, pDel)
                     end
                 end
@@ -1491,14 +1572,22 @@ function TorpedoAssembly.commandRefreshShipList()
 end
 
 function TorpedoAssembly.commandGenerateDesign(rarityIdx, warheadIdx, bodyIdx)
+    rarityIdx = math.floor(tonumber(rarityIdx) or -1)
+    warheadIdx = math.floor(tonumber(warheadIdx) or -1)
+    bodyIdx = math.floor(tonumber(bodyIdx) or -1)
+    if not TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx) then return end
+
     torpIndexRarity = rarityIdx
     torpIndexWarhead = warheadIdx
     torpIndexBody = bodyIdx
     player = TorpedoAssembly.getOwnerPlayer()
+    if not player or not player.craftIndex then return end
+
     TorpedoAssembly.commandSyncProdShips(player.craftIndex)
     TorpedoAssembly.commandSyncProdPower(player.craftIndex)
     local shipTechLevel = TorpedoAssembly.commandGetTechLevel(player.craftIndex)
     local torpData = TorpedoAssembly.commandGetTorpDesign(torpIndexRarity, torpIndexWarhead, torpIndexBody, shipTechLevel)
+    if not torpData then return end
     if onServer() then
         local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
         if targetPlayer then invokeClientFunction(targetPlayer, "commandUpdateStatsData", torpData) end
@@ -1507,15 +1596,25 @@ function TorpedoAssembly.commandGenerateDesign(rarityIdx, warheadIdx, bodyIdx)
 end
 callable(TorpedoAssembly, "commandGenerateDesign")
 
-function TorpedoAssembly.commandAddStoreTorpedo()
-    player = TorpedoAssembly.getOwnerPlayer()
-    if torpDesign and player then
-        TorpedoAssembly.commandSafeSendToStorage(torpDesign, player.craftIndex.value)
-    end
-end
-callable(TorpedoAssembly, "commandAddStoreTorpedo")
-
+-- Tech level for torpedo balancing on this ship.
+-- Prefer the ship's installed turrets (player power proxy);
+-- fall back to sector tech (positional balancing) when the ship has no turrets.
 function TorpedoAssembly.commandGetTechLevel(entityIdx)
+    local refTechLevel = 1
+    local refEntity = Entity(entityIdx)
+    if refEntity and valid(refEntity) then
+        local shipTurrets = {refEntity:getTurrets()}
+        if shipTurrets and TorpedoAssembly.getTableSize(shipTurrets) > 0 then
+            for _, turret in pairs(shipTurrets) do
+                local weapon = Weapons(turret)
+                if weapon.averageTech > refTechLevel then
+                    refTechLevel = weapon.averageTech
+                end
+            end
+        end
+        if refTechLevel > 1 then return refTechLevel end
+    end
+
     local sector = Sector()
     if sector then
         local x, y = sector:getCoordinates()
@@ -1524,31 +1623,23 @@ function TorpedoAssembly.commandGetTechLevel(entityIdx)
         end
     end
 
-    local refTechLevel = 1
-    local refEntity = Entity(entityIdx)
-    if not refEntity or not valid(refEntity) then return refTechLevel end
-    local shipTurrets = {refEntity:getTurrets()}
-    if shipTurrets and TorpedoAssembly.getTableSize(shipTurrets) > 0 then
-        for _, turret in pairs(shipTurrets) do
-            local weapon = Weapons(turret)
-            if weapon.averageTech > refTechLevel then
-            refTechLevel = weapon.averageTech end
-        end
-    end
     return refTechLevel
 end
 
 function TorpedoAssembly.commandGetTorpDesign(tRarityIndex, tWarheadIndex, tBodyIndex, tTechLevel)
+    if not TorpedoAssembly.isValidDesignIndex(tRarityIndex, tWarheadIndex, tBodyIndex) then return nil end
+
     local genX, genY
-    local sector = Sector()
-    if sector then
-        genX, genY = sector:getCoordinates()
-    end
-    if genX == nil or genY == nil then
-        local refDistFromTech = lerp(tTechLevel, 1, 52, 500, 0)
-        local refPosFromDist = math.sqrt(math.pow(refDistFromTech, 2) / 2)
-        genX = refPosFromDist
-        genY = refPosFromDist
+    if tTechLevel then
+        genX, genY = TorpedoAssembly.getCoordinatesFromTechLevel(tTechLevel)
+    else
+        local sector = Sector()
+        if sector then
+            genX, genY = sector:getCoordinates()
+        end
+        if genX == nil or genY == nil then
+            genX, genY = TorpedoAssembly.getCoordinatesFromTechLevel(1)
+        end
     end
     local tRarity, tWarhead, tBody = TorpedoAssembly.getEntryFromIndex(tRarityIndex, tWarheadIndex, tBodyIndex)
     local tDesignData = TorpedoGenerator():generate(genX, genY, nil, Rarity(tRarity), Warheads[tWarhead].type, Bodies[tBody].type)
@@ -1557,6 +1648,7 @@ function TorpedoAssembly.commandGetTorpDesign(tRarityIndex, tWarheadIndex, tBody
 end
 
 function TorpedoAssembly.commandSafeSendToStorage(refTorpData, craftIndex)
+    if not refTorpData then return 4 end
     local targetRefShip = Entity(craftIndex)
     if not targetRefShip then return 4 end
     local targetShipLauncher = TorpedoLauncher(targetRefShip)
@@ -1567,6 +1659,8 @@ function TorpedoAssembly.commandSafeSendToStorage(refTorpData, craftIndex)
 end
 
 function TorpedoAssembly.commandUpdateStatsData(torpData)
+    if not onClient() then return end
+
     torpDesign = torpData
     TorpedoAssembly.updateTorpedoStats()
 end
@@ -1609,78 +1703,29 @@ function TorpedoAssembly.parseStoredDesign(dataLine)
 end
 
 function TorpedoAssembly.getRarityColor(rarityIdx)
-    local rarityColor = {
-        [0] = RarityType.Common,
-        [1] = RarityType.Uncommon,
-        [2] = RarityType.Rare,
-        [3] = RarityType.Exceptional,
-        [4] = RarityType.Exotic,
-        [5] = RarityType.Legendary}
-    return Rarity(rarityColor[rarityIdx]).color
+    local entry = rarityCatalog[rarityIdx]
+    if not entry then return nil end
+    return Rarity(entry.rarity).color
 end
 
 function TorpedoAssembly.getEntryFromIndex(rarityIdx, warheadIdx, bodyIdx)
-    local rarityId = {
-        [0] = RarityType.Common,
-        [1] = RarityType.Uncommon,
-        [2] = RarityType.Rare,
-        [3] = RarityType.Exceptional,
-        [4] = RarityType.Exotic,
-        [5] = RarityType.Legendary}
-    local warheadId = {
-        [0] = WHRef.Nuclear,
-        [1] = WHRef.Neutron,
-        [2] = WHRef.Fusion,
-        [3] = WHRef.Kinetic,
-        [4] = WHRef.Plasma,
-        [5] = WHRef.Ion,
-        [6] = WHRef.Tandem,
-        [7] = WHRef.EMP,
-        [8] = WHRef.Sabot,
-        [9] = WHRef.AntiMatter}
-    local bodyId = {
-        [0] = BDRef.Orca,
-        [1] = BDRef.Hammerhead,
-        [2] = BDRef.Stingray,
-        [3] = BDRef.Ocelot,
-        [4] = BDRef.Lynx,
-        [5] = BDRef.Panther,
-        [6] = BDRef.Osprey,
-        [7] = BDRef.Eagle,
-        [8] = BDRef.Hawk}
-    return rarityId[rarityIdx], warheadId[warheadIdx], bodyId[bodyIdx]
+    local rarityEntry = rarityCatalog[rarityIdx]
+    local warheadEntry = prodCostWarheads[warheadIdx + 1]
+    local bodyEntry = prodCostBodies[bodyIdx + 1]
+    return
+        rarityEntry and rarityEntry.rarity or nil,
+        warheadEntry and warheadEntry.type or nil,
+        bodyEntry and bodyEntry.type or nil
 end
 
 function TorpedoAssembly.getMaterialFromIndex(rarityIdx, warheadIdx, bodyIdx)
-    local rarityMat = {
-        [0] = MaterialType.Iron,
-        [1] = MaterialType.Naonite,
-        [2] = MaterialType.Trinium,
-        [3] = MaterialType.Xanion,
-        [4] = MaterialType.Ogonite,
-        [5] = MaterialType.Avorion}
-    local warheadMat = {
-        [0] = MaterialType.Iron,
-        [1] = MaterialType.Titanium,
-        [2] = MaterialType.Titanium,
-        [3] = MaterialType.Naonite,
-        [4] = MaterialType.Trinium,
-        [5] = MaterialType.Trinium,
-        [6] = MaterialType.Xanion,
-        [7] = MaterialType.Ogonite,
-        [8] = MaterialType.Ogonite,
-        [9] = MaterialType.Avorion}
-    local bodyMat = {
-        [0] = MaterialType.Iron,
-        [1] = MaterialType.Titanium,
-        [2] = MaterialType.Naonite,
-        [3] = MaterialType.Naonite,
-        [4] = MaterialType.Trinium,
-        [5] = MaterialType.Trinium,
-        [6] = MaterialType.Xanion,
-        [7] = MaterialType.Ogonite,
-        [8] = MaterialType.Avorion}
-    return rarityMat[rarityIdx], warheadMat[warheadIdx], bodyMat[bodyIdx]
+    local rarityEntry = rarityCatalog[rarityIdx]
+    local warheadEntry = prodCostWarheads[warheadIdx + 1]
+    local bodyEntry = prodCostBodies[bodyIdx + 1]
+    return
+        rarityEntry and rarityEntry.mat or nil,
+        warheadEntry and warheadEntry.mat or nil,
+        bodyEntry and bodyEntry.mat or nil
 end
 
 function TorpedoAssembly.getMarkFromRarity(rarityVal)
@@ -1694,6 +1739,16 @@ function TorpedoAssembly.getMarkFromRarity(rarityVal)
         [-1] = "Prototype"%_t
     }
     return rarityMark[rarityVal]
+end
+
+function TorpedoAssembly.buildTorpName(rarityIdx, warheadIdx, bodyIdx)
+    if not TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx) then return "N/A" end
+    local rarityEntry = rarityCatalog[rarityIdx]
+    local warhead = Warheads[prodCostWarheads[warheadIdx + 1].type]
+    local body = Bodies[prodCostBodies[bodyIdx + 1].type]
+    return "${speed}-Class ${warhead} Torpedo"%_t %
+        {speed = body.name%_t, warhead = warhead.name%_t} ..
+        " " .. TorpedoAssembly.getMarkFromRarity(Rarity(rarityEntry.rarity).value)
 end
 
 function TorpedoAssembly.customRectBL(section, width, height)
