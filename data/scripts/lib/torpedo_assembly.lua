@@ -155,6 +155,7 @@ local torpFactorySlot = {}
 local torpFactory = {}
 local torpStats = {}
 local torpCost = {}
+local detailedServerLog = true
 
 local function getClientRuntime()
     local client = Client()
@@ -166,6 +167,37 @@ local function getServerRuntime()
     local server = Server()
     if not server then return 0 end
     return server.unpausedRuntime
+end
+
+local function serverLog(component, level, message)
+    if detailedServerLog and onServer() then
+        print("[TorpedoAssembly]["..component.."]["..level.."] "..message)
+    end
+end
+
+local function serverLogQueueState(reason)
+    serverLog("State", "Info", reason.." | waitEXT="..#self.torpWaitQueueEXT..
+        ", prodEXT="..#self.torpProdQueueEXT..
+        ", waitINT="..#self.torpWaitQueueINT..
+        ", prodINT="..#self.torpProdQueueINT..
+        ", shipsINT="..#self.torpProdShipsINT)
+end
+
+local function serverLogCost(action, amount, payerData, tCost)
+    local payerKind = "player"
+    local payerIndex = "unknown"
+    if payerData then
+        if payerData.pPayerIsAlliance then payerKind = "alliance" end
+        if payerData.pPayerIndex then payerIndex = tostring(payerData.pPayerIndex) end
+    end
+    serverLog("Economy", "Info", action.." amount="..tostring(amount)..", payer="..payerKind..":"..payerIndex..
+        ", cost={fe="..tostring(tCost and tCost[1])..
+        ", ti="..tostring(tCost and tCost[2])..
+        ", na="..tostring(tCost and tCost[3])..
+        ", tr="..tostring(tCost and tCost[4])..
+        ", xa="..tostring(tCost and tCost[5])..
+        ", og="..tostring(tCost and tCost[6])..
+        ", av="..tostring(tCost and tCost[7]).."}")
 end
 
 local function getMaterialKnowledgeFlags(refPlayer)
@@ -278,12 +310,7 @@ function TorpedoAssembly.update()
 end
 
 function TorpedoAssembly.secure()
-    print("Torpedo Assembly: Saving Server-Side Data.")
-    print("torpWaitQueueEXT <- "..#self.torpWaitQueueEXT)
-    print("torpProdQueueEXT <- "..#self.torpProdQueueEXT)
-    print("torpWaitQueueINT <- "..#self.torpWaitQueueINT)
-    print("torpProdQueueINT <- "..#self.torpProdQueueINT)
-    print("torpProdShipsINT <- "..#self.torpProdShipsINT)
+    serverLogQueueState("Saving server-side data"%_t)
     return {
         dWaitQueueEXT = self.torpWaitQueueEXT,
         dProdQueueEXT = self.torpProdQueueEXT,
@@ -301,18 +328,18 @@ function TorpedoAssembly.restore(data)
         local dWaitQueueINT = data.dWaitQueueINT or {}
         local dProdQueueINT = data.dProdQueueINT or {}
         local dProdShipsINT = data.dProdShipsINT or {}
-        print("Torpedo Assembly: Loading Server-Side Data.")
-        print("torpWaitQueueEXT -> "..#dWaitQueueEXT)
-        print("torpProdQueueEXT -> "..#dProdQueueEXT)
-        print("torpWaitQueueINT -> "..#dWaitQueueINT)
-        print("torpProdQueueINT -> "..#dProdQueueINT)
-        print("torpProdShipsINT -> "..#dProdShipsINT)
+        serverLog("State", "Info", "Loading server-side data"%_t.." | waitEXT="..#dWaitQueueEXT..
+            ", prodEXT="..#dProdQueueEXT..
+            ", waitINT="..#dWaitQueueINT..
+            ", prodINT="..#dProdQueueINT..
+            ", shipsINT="..#dProdShipsINT)
         self.torpWaitQueueEXT = dWaitQueueEXT
         self.torpProdQueueEXT = dProdQueueEXT
         self.torpWaitQueueINT = dWaitQueueINT
         self.torpProdQueueINT = dProdQueueINT
         self.torpProdShipsINT = dProdShipsINT
         nextQueueId = data.dNextQueueId or 0
+        serverLogQueueState("Restored server-side data"%_t)
     end
 end
 
@@ -458,8 +485,10 @@ function TorpedoAssembly.processFactoryLogic()
         if mustClean then TorpedoAssembly.commandCleanShipList() end
         self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
         self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
+        serverLogQueueState("Factory state changed"%_t)
         if targetPlayer then
             invokeClientFunction(targetPlayer, "commandLoadClientData", self.torpWaitQueueEXT, self.torpProdQueueEXT)
+            serverLog("Sync", "Info", "Pushed factory data to player"%_t.."="..tostring(targetPlayer.index))
         end
     end
 end
@@ -469,7 +498,9 @@ function TorpedoAssembly.processCleanLogic()
     if #self.torpWaitQueueINT > 0 then
         for pQueue = #self.torpWaitQueueINT, 1, -1 do
             if self.torpWaitQueueINT[pQueue] and self.torpWaitQueueINT[pQueue].tAmt <= 0 then
-                --TorpedoAssembly.dPrint("processCleanLogic() -> Cleaning Void Entry #"..pQueue)
+                serverLog("Queue", "Info", "Removed empty wait queue entry"%_t.." index="..pQueue..
+                    ", id="..tostring(self.torpWaitQueueINT[pQueue].tId)..
+                    ", craft="..tostring(self.torpWaitQueueINT[pQueue].cIdx))
                 table.remove(self.torpWaitQueueINT, pQueue)
                 somethingHasChanged = true
             end
@@ -493,8 +524,17 @@ function TorpedoAssembly.processStoreLogic()
                     if newStatus == 4 then
                         self.torpProdQueueINT[pLine].tStatus = 2
                         emergencyCleanNeeded = true
+                        serverLog("Storage", "Warn", "Could not store torpedo from line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                            ", craft="..tostring(self.torpProdQueueINT[pLine].cIdx)..
+                            ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                            ", status="..tostring(newStatus))
                     else self.torpProdQueueINT[pLine].tStatus = newStatus end
-                    --TorpedoAssembly.dPrint("processStoreLogic() -> Deposit Status for Line #"..pLine..": "..newStatus)
+                    if newStatus ~= 4 then
+                        serverLog("Storage", "Info", "Stored torpedo from line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                            ", craft="..tostring(self.torpProdQueueINT[pLine].cIdx)..
+                            ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                            ", status="..tostring(newStatus))
+                    end
                     somethingHasChanged = true
                 end
             end
@@ -612,7 +652,6 @@ function TorpedoAssembly.processQueueLogic()
                                 ---------------------------------------
 
                                 if repeatAmount > 0 then
-                                    --TorpedoAssembly.dPrint("processQueueLogic() -> Found repeating Entry for Line #"..pLine.." from Queue #"..pQueue)
                                     TorpedoAssembly.commandWithdrawCost(self.torpWaitQueueINT[pQueue].tCost, 1, self.torpWaitQueueINT[pQueue])
                                     self.torpProdQueueINT[pLine].tName = self.torpWaitQueueINT[pQueue].tName
                                     self.torpProdQueueINT[pLine].tRarity = self.torpWaitQueueINT[pQueue].tRarity
@@ -624,12 +663,16 @@ function TorpedoAssembly.processQueueLogic()
                                     self.torpProdQueueINT[pLine].tWork = self.torpProdQueueINT[pLine].tCost[0]
                                     self.torpProdQueueINT[pLine].tDone = 0
                                         self.torpProdQueueINT[pLine].tStatus = 1
+                                        serverLog("Production", "Info", "Started repeating torpedo line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                                            ", queueIndex="..pQueue..
+                                            ", craft="..tostring(self.torpProdQueueINT[pLine].cIdx)..
+                                            ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                                            ", work="..tostring(self.torpProdQueueINT[pLine].tWork))
                                         somethingHasChanged = true
                                         foundNewEntry = true
                                         break
                                     end
                                 else
-                                    --TorpedoAssembly.dPrint("processQueueLogic() -> Found new Entry for Line #"..pLine.." from Queue #"..pQueue)
                                     self.torpWaitQueueINT[pQueue].tAmt = self.torpWaitQueueINT[pQueue].tAmt - 1
                                     self.torpProdQueueINT[pLine].tName = self.torpWaitQueueINT[pQueue].tName
                                     self.torpProdQueueINT[pLine].tRarity = self.torpWaitQueueINT[pQueue].tRarity
@@ -641,6 +684,12 @@ function TorpedoAssembly.processQueueLogic()
                                     self.torpProdQueueINT[pLine].tWork = self.torpProdQueueINT[pLine].tCost[0]
                                     self.torpProdQueueINT[pLine].tDone = 0
                                     self.torpProdQueueINT[pLine].tStatus = 1
+                                    serverLog("Production", "Info", "Started queued torpedo line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                                        ", queueIndex="..pQueue..
+                                        ", remaining="..tostring(self.torpWaitQueueINT[pQueue].tAmt)..
+                                        ", craft="..tostring(self.torpProdQueueINT[pLine].cIdx)..
+                                        ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                                        ", work="..tostring(self.torpProdQueueINT[pLine].tWork))
                                     somethingHasChanged = true
                                     foundNewEntry = true
                                     break
@@ -650,7 +699,10 @@ function TorpedoAssembly.processQueueLogic()
                     end
                 end
                 if not foundNewEntry then
-                    --TorpedoAssembly.dPrint("processQueueLogic() -> No Entries. Idling Line #"..pLine)
+                    if self.torpProdQueueINT[pLine].tStatus ~= 0 then
+                        serverLog("Production", "Info", "Idled production line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                            ", craft="..tostring(self.torpProdQueueINT[pLine].cIdx))
+                    end
                     resetProductionLine(self.torpProdQueueINT[pLine])
                     somethingHasChanged = true
                 end
@@ -1289,6 +1341,11 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
             if self.torpWaitQueueINT[pQueue] then
                 if self.torpWaitQueueINT[pQueue].cIdx == craftIdx then
                     if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt, self.torpWaitQueueINT[pQueue]) end
+                    serverLog("Queue", "Info", "Stopped factory and removed wait entry"%_t.." id="..tostring(self.torpWaitQueueINT[pQueue].tId)..
+                        ", craft="..tostring(craftIdx)..
+                        ", torpedo="..tostring(self.torpWaitQueueINT[pQueue].tName)..
+                        ", amount="..tostring(self.torpWaitQueueINT[pQueue].tAmt)..
+                        ", repeat="..tostring(self.torpWaitQueueINT[pQueue].tRepeat))
                     table.remove(self.torpWaitQueueINT, pQueue)
                     refreshExt = true
                 end
@@ -1299,6 +1356,10 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
         for pLine = 1, #self.torpProdQueueINT do
             if self.torpProdQueueINT[pLine].cIdx == craftIdx then
                 TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
+                serverLog("Production", "Info", "Stopped factory and reset line"%_t.."="..tostring(self.torpProdQueueINT[pLine].cProdLine)..
+                    ", craft="..tostring(craftIdx)..
+                    ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                    ", status="..tostring(self.torpProdQueueINT[pLine].tStatus))
                 resetProductionLine(self.torpProdQueueINT[pLine])
                 refreshExt = true
             end
@@ -1311,6 +1372,8 @@ function TorpedoAssembly.commandStopFactory(craftIdx)
         if targetPlayer then
             invokeClientFunction(targetPlayer, "commandPushProdData", self.torpProdQueueEXT)
             invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT)
+            serverLog("Sync", "Info", "Pushed stopped factory data to player"%_t.."="..tostring(targetPlayer.index)..
+                ", craft="..tostring(craftIdx))
         end
     end
 end
@@ -1328,6 +1391,10 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
             if self.torpProdQueueINT[pLine].cIdx == craftIdx and
                 self.torpProdQueueINT[pLine].cProdLine == numLine then
                 TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pLine].tCost, 1, self.torpProdQueueINT[pLine])
+                serverLog("Production", "Info", "Removed torpedo from line"%_t.."="..tostring(numLine)..
+                    ", craft="..tostring(craftIdx)..
+                    ", torpedo="..tostring(self.torpProdQueueINT[pLine].tName)..
+                    ", status="..tostring(self.torpProdQueueINT[pLine].tStatus))
                 resetProductionLine(self.torpProdQueueINT[pLine])
                 refreshExt = true
             end
@@ -1336,7 +1403,12 @@ function TorpedoAssembly.commandRemoveFromLine(craftIdx, numLine)
     if refreshExt and onServer() then
         local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
         self.torpProdQueueEXT = TorpedoAssembly.reloadExtProdTable(self.torpProdQueueINT)
-        if targetPlayer then invokeClientFunction(targetPlayer, "commandPushProdData", self.torpProdQueueEXT) end
+        if targetPlayer then
+            invokeClientFunction(targetPlayer, "commandPushProdData", self.torpProdQueueEXT)
+            serverLog("Sync", "Info", "Pushed production line removal to player"%_t.."="..tostring(targetPlayer.index)..
+                ", craft="..tostring(craftIdx)..
+                ", line="..tostring(numLine))
+        end
     end
 end
 callable(TorpedoAssembly, "commandRemoveFromLine")
@@ -1352,6 +1424,11 @@ function TorpedoAssembly.commandRemoveFromQueue(entryId)
             if self.torpWaitQueueINT[pQueue].tId == entryId and
                 TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, self.torpWaitQueueINT[pQueue].cIdx) then
                 if not self.torpWaitQueueINT[pQueue].tRepeat then TorpedoAssembly.commandRefundCost(self.torpWaitQueueINT[pQueue].tCost, self.torpWaitQueueINT[pQueue].tAmt, self.torpWaitQueueINT[pQueue]) end
+                serverLog("Queue", "Info", "Removed wait queue entry"%_t.." id="..tostring(entryId)..
+                    ", craft="..tostring(self.torpWaitQueueINT[pQueue].cIdx)..
+                    ", torpedo="..tostring(self.torpWaitQueueINT[pQueue].tName)..
+                    ", amount="..tostring(self.torpWaitQueueINT[pQueue].tAmt)..
+                    ", repeat="..tostring(self.torpWaitQueueINT[pQueue].tRepeat))
                 table.remove(self.torpWaitQueueINT, pQueue)
                 refreshExt = true
                 break
@@ -1361,7 +1438,11 @@ function TorpedoAssembly.commandRemoveFromQueue(entryId)
     if refreshExt and onServer() then
         local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
         self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-        if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
+        if targetPlayer then
+            invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT)
+            serverLog("Sync", "Info", "Pushed wait queue removal to player"%_t.."="..tostring(targetPlayer.index)..
+                ", entryId="..tostring(entryId))
+        end
     end
 end
 callable(TorpedoAssembly, "commandRemoveFromQueue")
@@ -1387,17 +1468,31 @@ function TorpedoAssembly.commandAddToQueue(rarityIdx, warheadIdx, bodyIdx, craft
     if not TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx) or tAmount < 1 then return end
 
     if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
+    local queueId = TorpedoAssembly.genNewId()
+    local torpedoName = TorpedoAssembly.buildTorpName(rarityIdx, warheadIdx, bodyIdx)
     table.insert(self.torpWaitQueueINT, {
-        cIdx = craftIdx, tId = TorpedoAssembly.genNewId(),
-        tName = TorpedoAssembly.buildTorpName(rarityIdx, warheadIdx, bodyIdx),
+        cIdx = craftIdx, tId = queueId,
+        tName = torpedoName,
         tRarity = rarityIdx, tWarhead = warheadIdx, tBody = bodyIdx,
         tAmt = tAmount, tCost = torpCost, tRepeat = setRepeat,
         pPayerIndex = payerInfo.pPayerIndex, pPayerIsAlliance = payerInfo.pPayerIsAlliance,
     })
+    serverLog("Queue", "Info", "Added wait queue entry"%_t.." id="..tostring(queueId)..
+        ", craft="..tostring(craftIdx)..
+        ", torpedo="..tostring(torpedoName)..
+        ", amount="..tostring(tAmount)..
+        ", repeat="..tostring(setRepeat)..
+        ", tech="..tostring(shipTechLevel)..
+        ", payer="..tostring(payerInfo.pPayerIndex)..
+        ", alliance="..tostring(payerInfo.pPayerIsAlliance))
     if onServer() then
         local targetPlayer = TorpedoAssembly.getClientTargetPlayer()
         self.torpWaitQueueEXT = TorpedoAssembly.reloadExtWaitTable(self.torpWaitQueueINT)
-        if targetPlayer then invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT) end
+        if targetPlayer then
+            invokeClientFunction(targetPlayer, "commandPushWaitData", self.torpWaitQueueEXT)
+            serverLog("Sync", "Info", "Pushed added wait queue entry to player"%_t.."="..tostring(targetPlayer.index)..
+                ", entryId="..tostring(queueId))
+        end
     end
 end
 callable(TorpedoAssembly, "commandAddToQueue")
@@ -1445,6 +1540,7 @@ function TorpedoAssembly.commandWithdrawCost(tCost, tAmt, payerData)
         if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
             refPlayer:pay("", 0, tCost[1] * tAmt, tCost[2] * tAmt, tCost[3] * tAmt,
             tCost[4] * tAmt, tCost[5] * tAmt, tCost[6] * tAmt, tCost[7] * tAmt)
+            serverLogCost("Withdrew torpedo production resources"%_t, tAmt, payerData, tCost)
         end
     end
 end
@@ -1456,6 +1552,7 @@ function TorpedoAssembly.commandRefundCost(tCost, tAmt, payerData)
         if tCost[1] and tCost[2] and tCost[3] and tCost[4] and tCost[5] and tCost[6] and tCost[7] then
             refPlayer:receive("", 0, tCost[1] * tAmt, tCost[2] * tAmt, tCost[3] * tAmt,
             tCost[4] * tAmt, tCost[5] * tAmt, tCost[6] * tAmt, tCost[7] * tAmt)
+            serverLogCost("Refunded torpedo production resources"%_t, tAmt, payerData, tCost)
         end
     end
 end
@@ -1474,6 +1571,7 @@ function TorpedoAssembly.commandSyncProdShips(entityIdx)
         end
         if not foundShip then
             table.insert(self.torpProdShipsINT, {cIdx = refEntity.index.value})
+            serverLog("Sync", "Info", "Registered production ship"%_t.." craft="..tostring(refEntity.index.value))
         end
     end
 end
@@ -1508,6 +1606,10 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
                     table.insert(self.torpProdQueueEXT,{
                     cIdx = refEntity.index.value, cProdLine = pLine, cProdCap = sProdCap,
                     tName = "N/A", tWork = 1, tDone = 0, tStatus = 0})
+                    serverLog("Production", "Info", "Registered production line"%_t.."="..tostring(pLine)..
+                        ", craft="..tostring(refEntity.index.value)..
+                        ", capacity="..tostring(sProdCap)..
+                        ", tech="..tostring(refTech))
                 end
             end
         end
@@ -1519,6 +1621,10 @@ function TorpedoAssembly.commandSyncProdPower(entityIdx, techLevel)
                         if self.torpProdQueueINT[pDel].tStatus ~= 0 then
                             TorpedoAssembly.commandRefundCost(self.torpProdQueueINT[pDel].tCost, 1, self.torpProdQueueINT[pDel])
                         end
+                        serverLog("Production", "Warn", "Removed unavailable production line"%_t.."="..tostring(self.torpProdQueueINT[pDel].cProdLine)..
+                            ", craft="..tostring(refEntity.index.value)..
+                            ", availableLines="..tostring(sProdLines)..
+                            ", previousStatus="..tostring(self.torpProdQueueINT[pDel].tStatus))
                         table.remove(self.torpProdQueueINT, pDel)
                     end
                 end
