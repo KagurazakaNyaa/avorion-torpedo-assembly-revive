@@ -313,3 +313,123 @@ msgstr "原型"
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Refund torpedo from this production line."
 msgstr "从此生产线退还鱼雷。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Yes"
+msgstr "是"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "No"
+msgstr "否"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "${speed}-Class ${warhead} Torpedo"
+msgstr "${speed}级${warhead}鱼雷"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Idle"
+msgstr "空闲"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Name:"
+msgstr "名称："
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Saving server-side data"
+msgstr "正在保存服务器端数据"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Loading server-side data"
+msgstr "正在加载服务器端数据"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Restored server-side data"
+msgstr "已恢复服务器端数据"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Factory state changed"
+msgstr "工厂状态已变更"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Pushed factory data to player"
+msgstr "已向玩家推送工厂数据"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Removed empty wait queue entry"
+msgstr "已移除空等待队列项"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Could not store torpedo from line"
+msgstr "无法从生产线存入鱼雷"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Stored torpedo from line"
+msgstr "已从生产线存入鱼雷"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Started repeating torpedo line"
+msgstr "已启动重复鱼雷生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Started queued torpedo line"
+msgstr "已启动队列鱼雷生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Idled production line"
+msgstr "已闲置生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Stopped factory and removed wait entry"
+msgstr "已停止工厂并移除等待项"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Stopped factory and reset line"
+msgstr "已停止工厂并重置生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Pushed stopped factory data to player"
+msgstr "已向玩家推送停止后的工厂数据"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Removed torpedo from line"
+msgstr "已从生产线移除鱼雷"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Pushed production line removal to player"
+msgstr "已向玩家推送生产线移除信息"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Removed wait queue entry"
+msgstr "已移除等待队列项"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Pushed wait queue removal to player"
+msgstr "已向玩家推送等待队列移除信息"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Added wait queue entry"
+msgstr "已添加等待队列项"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Pushed added wait queue entry to player"
+msgstr "已向玩家推送新增等待队列项"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Withdrew torpedo production resources"
+msgstr "已扣除鱼雷生产资源"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Refunded torpedo production resources"
+msgstr "已退还鱼雷生产资源"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Registered production ship"
+msgstr "已注册生产船只"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Registered production line"
+msgstr "已注册生产线"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Removed unavailable production line"
+msgstr "已移除不可用生产线"
