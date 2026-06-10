@@ -1,8 +1,15 @@
-# ========== /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua ==========
-#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
-msgid "Torpedo Assembly"
-msgstr "鱼雷生产线"
+msgid ""
+msgstr ""
+"Project-Id-Version: Torpedo Assembly Revive 2.3\n"
+"PO-Revision-Date: 2026-06-10 00:00+0800\n"
+"Last-Translator: KagurazakaNyaa <dev@kagurazakanyaa.com>\n"
+"Language-Team: Chinese <dev@kagurazakanyaa.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
+# ========== /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua ==========
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Torpedo Assembly"
 msgstr "鱼雷生产线"
@@ -306,5 +313,3 @@ msgstr "原型"
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Refund torpedo from this production line."
 msgstr "从此生产线退还鱼雷。"
-
-
