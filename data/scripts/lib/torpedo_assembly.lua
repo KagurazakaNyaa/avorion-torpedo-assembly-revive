@@ -296,17 +296,22 @@ end
 
 function TorpedoAssembly.restore(data)
     if data then
+        local dWaitQueueEXT = data.dWaitQueueEXT or {}
+        local dProdQueueEXT = data.dProdQueueEXT or {}
+        local dWaitQueueINT = data.dWaitQueueINT or {}
+        local dProdQueueINT = data.dProdQueueINT or {}
+        local dProdShipsINT = data.dProdShipsINT or {}
         print("Torpedo Assembly: Loading Server-Side Data.")
-        print("torpWaitQueueEXT -> "..#data.dWaitQueueEXT)
-        print("torpProdQueueEXT -> "..#data.dProdQueueEXT)
-        print("torpWaitQueueINT -> "..#data.dWaitQueueINT)
-        print("torpProdQueueINT -> "..#data.dProdQueueINT)
-        print("torpProdShipsINT -> "..#data.dProdShipsINT)
-        self.torpWaitQueueEXT = data.dWaitQueueEXT or {}
-        self.torpProdQueueEXT = data.dProdQueueEXT or {}
-        self.torpWaitQueueINT = data.dWaitQueueINT or {}
-        self.torpProdQueueINT = data.dProdQueueINT or {}
-        self.torpProdShipsINT = data.dProdShipsINT or {}
+        print("torpWaitQueueEXT -> "..#dWaitQueueEXT)
+        print("torpProdQueueEXT -> "..#dProdQueueEXT)
+        print("torpWaitQueueINT -> "..#dWaitQueueINT)
+        print("torpProdQueueINT -> "..#dProdQueueINT)
+        print("torpProdShipsINT -> "..#dProdShipsINT)
+        self.torpWaitQueueEXT = dWaitQueueEXT
+        self.torpProdQueueEXT = dProdQueueEXT
+        self.torpWaitQueueINT = dWaitQueueINT
+        self.torpProdQueueINT = dProdQueueINT
+        self.torpProdShipsINT = dProdShipsINT
         nextQueueId = data.dNextQueueId or 0
     end
 end
@@ -700,17 +705,17 @@ end
 function TorpedoAssembly.fetchProdLines(refShipPlan)
     local refProdLines, refProdCapacity = 0, 0
     if refShipPlan then
-        refProdLines = refShipPlan:getStats().productionCapacity
+        refProdCapacity = refShipPlan:getStats().productionCapacity
         local tempBlocks = refShipPlan:getBlocksByType(BlockType.Assembly)
         for _, blockIndex in pairs(tempBlocks) do
             local tempBlock = refShipPlan:getBlock(blockIndex)
             if tempBlock then
-                refProdCapacity = asmMatLines[tempBlock.material.value + 1].lines
+                refProdLines = asmMatLines[tempBlock.material.value + 1].lines
                 break
             end
         end
     end
-    return refProdCapacity, refProdLines
+    return refProdLines, refProdCapacity
 end
 
 function TorpedoAssembly.fetchLaunchersData()
@@ -1135,6 +1140,7 @@ function TorpedoAssembly.actionDeleteDesign()
         return
     end
     local tempStrStorage = {}
+    if not listTorpDesigns or not listTorpDesigns.selected or listTorpDesigns.selected < 0 then return end
     local refLine = listTorpDesigns.selected + 1
     local fStream = io.open(filePath, "r")
     if not fStream then return end
