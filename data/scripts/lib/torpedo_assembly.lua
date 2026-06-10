@@ -1374,11 +1374,10 @@ function TorpedoAssembly.commandAddToQueue(rarityIdx, warheadIdx, bodyIdx, craft
 
     local shipTechLevel = TorpedoAssembly.commandGetTechLevel(actorPlayer.craftIndex)
     local payerInfo = TorpedoAssembly.getPayerInfo(actorPlayer)
-    player = actorPlayer
-    TorpedoAssembly.fetchPlayerData()
+    local payerResource = TorpedoAssembly.getPayerResources(payerInfo)
     torpCost = TorpedoAssembly.calculateTorpedoCost(rarityIdx, warheadIdx, bodyIdx, shipTechLevel)
     if not torpCost then return end
-    tAmount = math.min(TorpedoAssembly.checkResources(playerResource, torpCost), tAmount)
+    tAmount = math.min(TorpedoAssembly.checkResources(payerResource, torpCost), tAmount)
     if not TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx) or tAmount < 1 then return end
 
     if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
