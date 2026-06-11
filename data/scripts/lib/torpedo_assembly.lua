@@ -1839,7 +1839,7 @@ function TorpedoAssembly.commandGetTechLevel(entityIdx)
         if shipTurrets and TorpedoAssembly.getTableSize(shipTurrets) > 0 then
             for _, turret in pairs(shipTurrets) do
                 local weapon = Weapons(turret)
-                if weapon.averageTech > refTechLevel then
+                if weapon and weapon.averageTech and weapon.averageTech > refTechLevel then
                     refTechLevel = weapon.averageTech
                 end
             end
