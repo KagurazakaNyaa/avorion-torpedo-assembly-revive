@@ -216,7 +216,7 @@ msgid "REPEAT"
 msgstr ""
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
-msgid "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
+msgid "Add chosen amount of torpedoes to the production queue. Disabled when no torpedo design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."
 msgstr ""
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
@@ -228,7 +228,31 @@ msgid "Completely stop all production, clean up production queue and refund mate
 msgstr ""
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
-msgid "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
+msgid "Automatically continue producing the chosen torpedo design. Disabled when no design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "The selected torpedo design cannot be produced."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You must be piloting the selected production ship."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Select at least one torpedo to produce."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "This ship needs working Assembly and Torpedo Storage blocks."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You have not unlocked the materials required for this torpedo."
+msgstr ""
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You do not have enough resources to produce this torpedo."
 msgstr ""
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:

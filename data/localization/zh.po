@@ -215,8 +215,8 @@ msgid "REPEAT"
 msgstr "重复"
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
-msgid "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr "将选定数量的鱼雷添加到生产队列中。如果没有生成的鱼雷设计，或者您的船缺少组件或鱼雷存储块，将禁用。"
+msgid "Add chosen amount of torpedoes to the production queue. Disabled when no torpedo design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."
+msgstr "将选定数量的鱼雷添加到生产队列中。如果没有生成鱼雷设计、舰船缺少正常工作的装配厂或鱼雷存储块，或者资源不足，此按钮将被禁用。"
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Remove chosen torpedo production request from queue. Will be disabled, if there is nothing in queue."
@@ -227,8 +227,32 @@ msgid "Completely stop all production, clean up production queue and refund mate
 msgstr "完全停止所有生产，清理生产队列并为所有正在进行的鱼雷退还材料。 如果什么都没产生，将被禁用。"
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
-msgid "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."
-msgstr "自动继续生产选定的鱼雷设计。 如果没有生成鱼雷设计或者您的船缺少装配或鱼雷存储块，将被禁用。"
+msgid "Automatically continue producing the chosen torpedo design. Disabled when no design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."
+msgstr "自动继续生产选定的鱼雷设计。如果没有生成设计、舰船缺少正常工作的装配厂或鱼雷存储块，或者资源不足，此按钮将被禁用。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "The selected torpedo design cannot be produced."
+msgstr "无法生产所选的鱼雷设计。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You must be piloting the selected production ship."
+msgstr "您必须驾驶所选的生产舰船。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "Select at least one torpedo to produce."
+msgstr "请至少选择一枚要生产的鱼雷。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "This ship needs working Assembly and Torpedo Storage blocks."
+msgstr "该舰船需要正常工作的装配厂和鱼雷存储块。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You have not unlocked the materials required for this torpedo."
+msgstr "您尚未解锁该鱼雷所需的材料知识。"
+
+#: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
+msgid "You do not have enough resources to produce this torpedo."
+msgstr "您没有足够的资源生产该鱼雷。"
 
 #: /home/kagurazakanyaa/.avorion/mods/avorion-torpedo-assembly-revive/data/scripts/lib/torpedo_assembly.lua:
 msgid "Production Speed:"
