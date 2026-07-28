@@ -175,6 +175,13 @@ local function serverLog(component, level, message)
     end
 end
 
+local function serverRejectAddToQueue(actorPlayer, reason, message, details)
+    serverLog("Queue", "Warn", "Rejected add-to-queue reason="..tostring(reason)..
+        ", player="..tostring(actorPlayer and actorPlayer.index)..
+        ", "..tostring(details or ""))
+    if actorPlayer then actorPlayer:sendChatMessage("Torpedo Assembly", 1, message) end
+end
+
 local function serverLogQueueState(reason)
     serverLog("State", "Info", reason.." | waitEXT="..#self.torpWaitQueueEXT..
         ", prodEXT="..#self.torpProdQueueEXT..
@@ -273,13 +280,14 @@ end
 
 local function hasProductionCapability(entityIdx)
     local refEntity = Entity(entityIdx)
-    if not refEntity or not valid(refEntity) then return false end
+    if not refEntity or not valid(refEntity) then return false, 0, 0, 0 end
 
     local refShipPlan = Plan(refEntity)
-    if not refShipPlan or not hasTorpedoStorage(refShipPlan) then return false end
+    if not refShipPlan then return false, 0, 0, 0 end
 
     local prodLines, prodCap = TorpedoAssembly.fetchProdLines(refShipPlan)
-    return prodLines > 0 and prodCap > 0
+    local storageBlocks = refShipPlan:getNumBlocks(BlockType.TorpedoStorage)
+    return hasTorpedoStorage(refShipPlan) and prodLines > 0 and prodCap > 0, prodLines, prodCap, storageBlocks
 end
 
 local function isStoredPayerStillValid(payerData)
@@ -369,12 +377,9 @@ function TorpedoAssembly.update()
                 local hasRequiredBlocks = blocksAssembly > 0 and blocksTorpStorage > 0
                 if shipPlan and hasRequiredBlocks then
                     TorpedoAssembly.updateDesignerButtons(true)
-                    if not torpDesign then
-                        btnDesignerSave.active = false
-                        btnAssemblerAdd.active = false
-                        btnAssemblerRepeat.active = false
-                    end
+                    if not torpDesign then btnDesignerSave.active = false end
                 else TorpedoAssembly.updateDesignerButtons(false) end
+                TorpedoAssembly.updateAssemblerButtons()
                 countUI = 0
             end
         end
@@ -526,10 +531,10 @@ function TorpedoAssembly.initTorpCraftManager(tab, section)
     btnAssemblerRemove = TorpedoAssembly.customButton(tab, section, 206, 62, 110, 25, "REMOVE"%_t, "actionProdRemove", false)
     btnAssemblerStop = TorpedoAssembly.customButton(tab, section, 206, 98, 110, 25, "STOP"%_t, "actionProdStop", false)
     btnAssemblerRepeat = TorpedoAssembly.customButton(tab, section, 206, 134, 110, 25, "REPEAT"%_t, "actionProdRepeat", false)
-    btnAssemblerAdd.tooltip = "Add chosen amount of torpedoes to production queue. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."%_t
+    btnAssemblerAdd.tooltip = "Add chosen amount of torpedoes to the production queue. Disabled when no torpedo design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."%_t
     btnAssemblerRemove.tooltip = "Remove chosen torpedo production request from queue. Will be disabled, if there is nothing in queue."%_t
     btnAssemblerStop.tooltip = "Completely stop all production, clean up production queue and refund materials for all torpedoes in progress. Will be disabled, if nothing is produced."%_t
-    btnAssemblerRepeat.tooltip = "Automatically continue to produce chosen torpedo design. Will be disabled, if there is no generated torpedo design or if your ship is missing Assembly or Torpedo Storage blocks."%_t
+    btnAssemblerRepeat.tooltip = "Automatically continue producing the chosen torpedo design. Disabled when no design is generated, the ship lacks working Assembly or Torpedo Storage blocks, or resources are insufficient."%_t
     torpFactory.pProdCap = TorpedoAssembly.customTextRc(tab, TorpedoAssembly.customText(tab, section, 15, 25, 125, 20, "Production Speed:"%_t, 13).localRect, 50, 20, "", 13, true, -1)
     torpFactory.pProdLines = TorpedoAssembly.customTextRc(tab, TorpedoAssembly.customText(tab, section, 15, 47, 125, 20, "Production Lines:"%_t, 13).localRect, 50, 20, "", 13, true, -1)
     torpFactory.pProdEff = TorpedoAssembly.customTextRc(tab, TorpedoAssembly.customText(tab, section, 15, 69, 125, 20, "Required Effort:"%_t, 13).localRect, 50, 20, "", 13, true, -1)
@@ -973,8 +978,18 @@ function TorpedoAssembly.updateDesignerButtons(bool)
     btnDesignerProto.active = bool
     btnDesignerSave.active = bool
     btnDesignerReset.active = bool
-    btnAssemblerAdd.active = bool
-    btnAssemblerRepeat.active = bool
+end
+
+function TorpedoAssembly.canQueueProduction()
+    if not onClient() or not player or not player.craftIndex or not shipPlan or not torpDesign then return false end
+    if blocksAssembly <= 0 or blocksTorpStorage <= 0 or shipProdLines <= 0 or shipProdCapacity <= 0 then return false end
+    return TorpedoAssembly.checkResources(playerResource, torpCost) > 0
+end
+
+function TorpedoAssembly.updateAssemblerButtons()
+    local canQueue = TorpedoAssembly.canQueueProduction()
+    if btnAssemblerAdd then btnAssemblerAdd.active = canQueue end
+    if btnAssemblerRepeat then btnAssemblerRepeat.active = canQueue end
 end
 
 function TorpedoAssembly.updateProdDeleteButton()
@@ -1118,11 +1133,13 @@ function TorpedoAssembly.updateTorpedoFactory()
             torpFactory.pOrderAmount.segments = 0
             torpFactory.pOrderAmount.max = 0
             torpFactory.pOrderAmount.min = 0
+            torpFactory.pOrderAmount.sliderPosition = 0
         end
     else
         torpFactory.pOrderAmount.segments = 0
         torpFactory.pOrderAmount.max = 0
         torpFactory.pOrderAmount.min = 0
+        torpFactory.pOrderAmount.sliderPosition = 0
     end
 end
 
@@ -1237,6 +1254,8 @@ function TorpedoAssembly.resetFactoryStats()
     torpFactory.pOrderAmount.segments = 0
     torpFactory.pOrderAmount.max = 0
     torpFactory.pOrderAmount.min = 0
+    if btnAssemblerAdd then btnAssemblerAdd.active = false end
+    if btnAssemblerRepeat then btnAssemblerRepeat.active = false end
     for t = 1, 8 do torpCost[t - 1] = 1 end
 end
 
@@ -1328,9 +1347,10 @@ end
 callable(TorpedoAssembly, "actionLoadSelected")
 
 function TorpedoAssembly.actionProdAdd()
-    if onClient() and torpDesign and torpFactory.pOrderAmount.value > 0 then
-        invokeServerFunction("commandAddToQueue", torpIndexRarity, torpIndexWarhead, torpIndexBody, player.craftIndex.value, torpFactory.pOrderAmount.value, false)
-    end
+    if not onClient() or not TorpedoAssembly.canQueueProduction() then return end
+    local amount = math.floor(tonumber(torpFactory.pOrderAmount.value) or 0)
+    if amount < 1 then return end
+    invokeServerFunction("commandAddToQueue", torpIndexRarity, torpIndexWarhead, torpIndexBody, player.craftIndex.value, amount, false)
 end
 callable(TorpedoAssembly, "actionProdAdd")
 
@@ -1349,9 +1369,10 @@ end
 callable(TorpedoAssembly, "actionProdStop")
 
 function TorpedoAssembly.actionProdRepeat()
-    if onClient() and torpDesign and torpFactory.pOrderAmount.value > 0 then
-        invokeServerFunction("commandAddToQueue", torpIndexRarity, torpIndexWarhead, torpIndexBody, player.craftIndex.value, 1, true)
-    end
+    if not onClient() or not TorpedoAssembly.canQueueProduction() then return end
+    local amount = math.floor(tonumber(torpFactory.pOrderAmount.value) or 0)
+    if amount < 1 then return end
+    invokeServerFunction("commandAddToQueue", torpIndexRarity, torpIndexWarhead, torpIndexBody, player.craftIndex.value, 1, true)
 end
 callable(TorpedoAssembly, "actionProdRepeat")
 
@@ -1555,17 +1576,51 @@ function TorpedoAssembly.commandAddToQueue(rarityIdx, warheadIdx, bodyIdx, craft
     setRepeat = setRepeat == true
 
     local actorPlayer = TorpedoAssembly.getOwnerPlayer()
-    if not TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx) or
-        not TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, craftIdx) or tAmount < 1 then return end
-    if not hasProductionCapability(craftIdx) then return end
+    if not TorpedoAssembly.isValidDesignIndex(rarityIdx, warheadIdx, bodyIdx) then
+        serverRejectAddToQueue(actorPlayer, "invalid_design", "The selected torpedo design cannot be produced."%_T,
+            "craft="..tostring(craftIdx)..", rarity="..tostring(rarityIdx)..", warhead="..tostring(warheadIdx)..", body="..tostring(bodyIdx))
+        return
+    end
+    if not TorpedoAssembly.isPlayerCurrentCraft(actorPlayer, craftIdx) then
+        serverRejectAddToQueue(actorPlayer, "wrong_craft", "You must be piloting the selected production ship."%_T,
+            "craft="..tostring(craftIdx)..", currentCraft="..tostring(actorPlayer and actorPlayer.craftIndex))
+        return
+    end
+    if tAmount < 1 then
+        serverRejectAddToQueue(actorPlayer, "empty_amount", "Select at least one torpedo to produce."%_T,
+            "craft="..tostring(craftIdx)..", amount="..tostring(tAmount))
+        return
+    end
+
+    local hasCapability, prodLines, prodCap, storageBlocks = hasProductionCapability(craftIdx)
+    if not hasCapability then
+        serverRejectAddToQueue(actorPlayer, "no_production_capability", "This ship needs working Assembly and Torpedo Storage blocks."%_T,
+            "craft="..tostring(craftIdx)..", lines="..tostring(prodLines)..", capacity="..tostring(prodCap)..", storageBlocks="..tostring(storageBlocks))
+        return
+    end
 
     local shipTechLevel = TorpedoAssembly.commandGetTechLevel(actorPlayer.craftIndex)
     local payerInfo = TorpedoAssembly.getPayerInfo(actorPlayer)
     local payerResource = TorpedoAssembly.getPayerResources(payerInfo)
     torpCost = TorpedoAssembly.calculateTorpedoCost(rarityIdx, warheadIdx, bodyIdx, shipTechLevel)
-    if not torpCost then return end
-    tAmount = math.min(TorpedoAssembly.checkResources(payerResource, torpCost), tAmount)
-    if not TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx) or tAmount < 1 then return end
+    if not torpCost then
+        serverRejectAddToQueue(actorPlayer, "no_cost", "The selected torpedo design cannot be produced."%_T,
+            "craft="..tostring(craftIdx)..", rarity="..tostring(rarityIdx)..", warhead="..tostring(warheadIdx)..", body="..tostring(bodyIdx))
+        return
+    end
+    if not TorpedoAssembly.checkKnowledge(rarityIdx, warheadIdx, bodyIdx) then
+        serverRejectAddToQueue(actorPlayer, "no_knowledge", "You have not unlocked the materials required for this torpedo."%_T,
+            "craft="..tostring(craftIdx)..", rarity="..tostring(rarityIdx)..", warhead="..tostring(warheadIdx)..", body="..tostring(bodyIdx))
+        return
+    end
+
+    local affordableAmount = TorpedoAssembly.checkResources(payerResource, torpCost)
+    if affordableAmount < 1 then
+        serverRejectAddToQueue(actorPlayer, "insufficient_resources", "You do not have enough resources to produce this torpedo."%_T,
+            "craft="..tostring(craftIdx)..", payer="..tostring(payerInfo.pPayerIndex)..", requested="..tostring(tAmount)..", affordable="..tostring(affordableAmount))
+        return
+    end
+    tAmount = math.min(affordableAmount, tAmount)
 
     if not setRepeat then TorpedoAssembly.commandWithdrawCost(torpCost, tAmount, payerInfo) end
     local queueId = TorpedoAssembly.genNewId()
